@@ -1,31 +1,52 @@
 const express = require('express');
 const fs = require('fs');
+const busboy = require('connect-busboy');
 const thumbsupply = require('thumbsupply');
 const cors  = require('cors');
+
 const app = express();
+app.use(busboy());
+
+var corsOptions = {
+  origin: 'http://localhost:3000/',
+  optionsSuccessStatus: 200
+}
 
 const videos = [
   {
     id: 0,
     poster: '/video/0/poster',
-    duration: '3 mins',
-    name: 'Sample 1'
+    // duration: '3 mins',
+    name: 'Video 1'
   },
   {
     id: 1,
     poster: '/video/1/poster',
-    duration: '4 mins',
-    name: 'Sample 2'
-  },
-  {
-    id: 2,
-    poster: '/video/2/poster',
-    duration: '2 mins',
-    name: 'Sample 3'
+    // duration: '4 mins',
+    name: 'Video 2'
   },
 ];
 
-app.use(cors());
+app.use(cors(corsOptions));
+
+
+app.route('/upload')
+    .post(function (req, res, next) {
+
+        var fstream;
+        req.pipe(req.busboy);
+        req.busboy.on('file', function (fieldname, file, filename) {
+            console.log("Uploading: " + filename);
+
+            //Path where image will be uploaded
+            fstream = fs.createWriteStream('./assets/' + filename);
+            file.pipe(fstream);
+            fstream.on('close', function () {    
+                console.log("Upload Finished of " + filename);              
+                res.redirect('back');           //where to go next
+            });
+        });
+    });
 
 // endpoint to fetch all videos metadata
 app.get('/videos', function(req, res) {

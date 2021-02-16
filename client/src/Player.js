@@ -11,7 +11,7 @@ export default class Player extends Component {
     }
     async componentDidMount() {
         try {
-            const res = await fetch(`http://localhost:4000/video/${this.state.videoId}/data`);
+            const res = await fetch(`${process.env.REACT_APP_BASE_URL}/video/${this.state.videoId}/data`);
             const data = await res.json();
             this.setState({ videoData: data });
         } catch (error) {
@@ -23,7 +23,7 @@ export default class Player extends Component {
             <div className="App">
                 <header className="App-header">
                     <video controls autoPlay>
-                        <source src={`http://localhost:4000/video/${this.state.videoId}`} type="video/mp4"></source>
+                        <source src={`${process.env.REACT_APP_BASE_URL}/video/${this.state.videoId}`} type="video/mp4"></source>
                     </video>
                     <h1>{ this.state.videoData.name }</h1>
                     <Link to='/'><h1>Back</h1></Link>
