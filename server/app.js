@@ -7,27 +7,35 @@ const cors  = require('cors');
 const app = express();
 app.use(busboy());
 
-var corsOptions = {
-  origin: 'http://localhost:3000/',
-  optionsSuccessStatus: 200
-}
+// var corsOptions = {
+//   origin: 'http://localhost:3000/',
+//   optionsSuccessStatus: 200
+// }
+const products = [
+  {
+    id: 0,
+    name: 'Product 1'
+  },
+];
 
 const videos = [
   {
     id: 0,
     poster: '/video/0/poster',
+    productid: 0,
     // duration: '3 mins',
     name: 'Video 1'
   },
   {
     id: 1,
     poster: '/video/1/poster',
+    productid: 1,
     // duration: '4 mins',
     name: 'Video 2'
   },
 ];
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 
 app.route('/upload')
@@ -49,8 +57,17 @@ app.route('/upload')
     });
 
 // endpoint to fetch all videos metadata
-app.get('/videos', function(req, res) {
-  res.json(videos);
+app.get('/videos/:productid', function(req, res) {
+  const id = parseInt(req.params.productid, 10);
+  let pvideos = videos.filter(function (e) {
+    return e.productid == id;
+  });
+  res.json(pvideos);
+});
+
+// endpoint to fetch all products metadata
+app.get('/products', function(req, res) {
+  res.json(products);
 });
 
 // app.get('/video/:id/caption', function(req, res) {

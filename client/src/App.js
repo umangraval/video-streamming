@@ -4,10 +4,12 @@ import {
   BrowserRouter as Router,
   Switch,
 } from "react-router-dom";
+// import { BrowserHistory } from 'react-router'
 import Home from './Home';
 import Player from './Player';
 import Qrcode from './Qrcode';
 import Upload from './Upload';
+import Product from './Product';
 import './App.css';
 
 function App() {
@@ -18,6 +20,7 @@ function App() {
         <Route path="/qrcode" component={Qrcode}></Route>
         <Route path="/upload" component={Upload}></Route>
         <Route path="/player/:id" component={Player}></Route>
+        <Route path="/product/:id" component={Product}></Route>
       </Switch>
     </Router>
   );

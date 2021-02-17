@@ -1,45 +1,46 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Upload from './Upload';
-import Qrcode from './Qrcode';
-export default class Home extends Component {
+// import Upload from './Upload';
+
+export default class Product extends Component {
     constructor() {
         super();
         this.state = {
-            products: []
+            videos: []
         };
     }
     async componentDidMount() {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/products`);
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/videos/${this.props.match.params.id}`);
             const data = await response.json();
             console.log(data);
-            this.setState({ products: [...data] });
+            this.setState({ videos: [...data] });
+            
         } catch (error) {
             console.log(error);
         }
     }
     render() {
+        
         return (
             <div className="App App-header">
                 <div className="container">
                     <div className="row">
-                        {this.state.products.map(product =>
-                        <div className="col-md-4" key={product.id}>
-                            <Link to={`/product/${product.id}`}>
+                        {this.state.videos.map(video =>
+                        <div className="col-md-4" key={video.id}>
+                            <Link to={`/player/${video.id}`}>
                                 <div className="card border-0">
-                                    {/* <img src={`${process.env.REACT_APP_BASE_URL}${product.poster}`} alt={product.name} /> */}
+                                    <img src={`${process.env.REACT_APP_BASE_URL}${video.poster}`} alt={video.name} />
                                     <div className="card-body">
-                                        <p>{product.name}</p>
-                                        {/* <p>{product.duration}</p> */}
-                                        {/* <a onClick={show}>Show Qrcode</a> */}
-                                        <Qrcode url={`/product/${product.id}`} />
+                                        <p>{video.name}</p>
+                                        {/* <p>{video.duration}</p> */}
                                     </div>
                                 </div>
                             </Link>
                         </div>
                         )}
                     </div>
+                    <button  onClick={() => { this.props.history.goBack() }}>Back</button>
                 </div>
             </div>
         )

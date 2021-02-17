@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
-
-export default class Player extends Component {
+import { withRouter } from 'react-router-dom';
+class Player extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,6 +19,7 @@ export default class Player extends Component {
         }
     }
     render() {
+    
         return (
             <div className="App">
                 <header className="App-header">
@@ -26,9 +27,12 @@ export default class Player extends Component {
                         <source src={`${process.env.REACT_APP_BASE_URL}/video/${this.state.videoId}`} type="video/mp4"></source>
                     </video>
                     <h1>{ this.state.videoData.name }</h1>
-                    <Link to='/'><h1>Back</h1></Link>
+                    <button  onClick={() => { this.props.history.goBack() }}>Back</button>
                 </header>
+                
             </div>
         )
     }
 }
+
+export default withRouter(Player);
