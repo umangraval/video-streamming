@@ -1,16 +1,15 @@
 const express = require('express');
 const fs = require('fs');
-const busboy = require('connect-busboy');
 const thumbsupply = require('thumbsupply');
 const cors  = require('cors');
 const bodyParser = require('body-parser');
+const multer = require('multer');
 const mongoose = require('mongoose');
 const { Product } = require('./model/Product');
 const { Video } = require('./model/Video');
 const busboyBodyParser = require('busboy-body-parser');
 
 const app = express();
-app.use(busboy());
 
 // var corsOptions = {
 //   origin: 'http://localhost:3000/',
@@ -19,7 +18,6 @@ app.use(busboy());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(busboyBodyParser());
 
 
 // Database Connection
@@ -48,19 +46,34 @@ mongoose.connection.on('disconnected', () => {
 //     id: 0,
 //     poster: '/video/0/poster',
 //     productid: 0,
-//     // duration: '3 mins',
 //     name: 'Video 1'
 //   },
 //   {
 //     id: 1,
 //     poster: '/video/1/poster',
-//     productid: 1,
-//     // duration: '4 mins',
+//     productid: 0,
 //     name: 'Video 2'
 //   },
 // ];
 
+
+
 app.use(cors());
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, __dirname + '/assets')      //you tell where to upload the files,
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '.mp4')
+  }
+})
+
+var upload = multer({storage: storage,
+    onFileUploadStart: function (file) {
+      console.log(file.originalname + ' is starting ...')
+    },
+});
 
 app.post('/product', async function(req, res) {
   const { name } = req.body;
@@ -70,32 +83,50 @@ app.post('/product', async function(req, res) {
   res.json(data);
 });
 
-app.route('/upload')
-    .post(function (req, res, next) {
-        const { name, productId } = req.body;
-        var fstream;
-        req.pipe(req.busboy);
-        req.busboy.on('file', async function (fieldname, file, filename) {
-          console.log(fieldname);
-            console.log("Uploading: " + filename);
+// app.route('/upload')
+//     .post(function (req, res, next) {
+//         const { name, productId } = req.body;
+//         var fstream;
+//         req.pipe(req.busboy);
+//         req.busboy.on('file', async function (fieldname, file, filename) {
+//           console.log(fieldname);
+//             console.log("Uploading: " + filename);
 
-            //Path where image will be uploaded
-            const newFilename = `${Math.floor(Date.now() / 1000)}.mp4`;
-            const newVideo = new Video();
-            newVideo.name = name;
-            newVideo.productId = productId;
-            newVideo.filename = newFilename;
-            newVideo.poster = `/video/${name}/poster`;
-            const data = await newVideo.save();
+//             //Path where image will be uploaded
+//             const newFilename = `${Math.floor(Date.now() / 1000)}.mp4`;
+//             const newVideo = new Video();
+//             newVideo.name = name;
+//             newVideo.productId = productId;
+//             newVideo.filename = newFilename;
+//             newVideo.poster = `/video/${name}/poster`;
+//             const data = await newVideo.save();
             
-            fstream = fs.createWriteStream('./assets/' + newFilename);
-            file.pipe(fstream);
-            fstream.on('close', function () {    
-                console.log("Upload Finished of " + filename);              
-                res.json(data);           //where to go next
-            });
-        });
-    });
+//             fstream = fs.createWriteStream('./assets/' + newFilename);
+//             file.pipe(fstream);
+//             fstream.on('close', function () {    
+//                 console.log("Upload Finished of " + filename);              
+//                 res.json(data);           //where to go next
+//             });
+//         });
+//     });
+
+// ===========================================================
+
+app.post('/upload', upload.single('file'), async function (req, res) {
+  const { name, productId } = req.body;
+  const { filename } = req.file; 
+  const newVideo = new Video();
+  newVideo.name = name;
+  newVideo.productId = productId;
+  newVideo.filename = filename.split('.')[0];
+  newVideo.poster = `/video/${filename.split('.')[0]}/poster`;
+  const data = await newVideo.save();
+  res.json(data);
+})
+
+
+// ===========================================================
+// Production code 
 
 // endpoint to fetch all videos metadata
 app.get('/videos/:productId', async function(req, res) {
@@ -110,22 +141,41 @@ app.get('/products', async function(req, res) {
   res.json(products);
 });
 
-// app.get('/video/:id/caption', function(req, res) {
-//   res.sendFile('assets/captions/sample.vtt', { root: __dirname });
+// ==========================================================
+
+// // endpoint to fetch all videos metadata
+// app.get('/videos/:productid', function(req, res) {
+//   const id = parseInt(req.params.productid, 10);
+//   let pvideos = videos.filter(function (e) {
+//     return e.productid == id;
+//   });
+//   res.json(pvideos);
 // });
 
+// // endpoint to fetch all products metadata
+// app.get('/products', function(req, res) {
+//   res.json(products);
+// });
+
+// // endpoint to fetch a single video's metadata
+// app.get('/video/:id/data', function(req, res) {
+//   const id = parseInt(req.params.id, 10);
+//   res.json(videos[id]);
+// });
+
+// ==========================================================
 app.get('/video/:name/poster', function(req, res) {
   thumbsupply.generateThumbnail(`assets/${req.params.name}.mp4`)
     .then(thumb => res.sendFile(thumb))
     .catch(err => console.log(err))
 });
 
-// endpoint to fetch a single video's metadata
-app.get('/video/:id/data', async function(req, res) {
-  const { id } = req.params;
-  const video = await Video.findById(id);
-  res.json(video);
-});
+// // endpoint to fetch a single video's metadata
+// app.get('/video/:id/data', async function(req, res) {
+//   const { id } = req.params;
+//   const video = await Video.findById(id);
+//   res.json(video);
+// });
 
 app.get('/video/:id', function(req, res) {
   const path = `assets/${req.params.id}.mp4`;
