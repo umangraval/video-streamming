@@ -25,15 +25,15 @@ export default class Home extends Component {
                 <div className="container">
                     <div className="row">
                         {this.state.products.map(product =>
-                        <div className="col-md-4" key={product.id}>
-                            <Link to={`/product/${product.id}`}>
+                        <div className="col-md-4" key={product._id}>
+                            <Link to={`/product/${product._id}`}>
                                 <div className="card border-0">
                                     {/* <img src={`${process.env.REACT_APP_BASE_URL}${product.poster}`} alt={product.name} /> */}
                                     <div className="card-body">
                                         <p>{product.name}</p>
                                         {/* <p>{product.duration}</p> */}
                                         {/* <a onClick={show}>Show Qrcode</a> */}
-                                        <Qrcode url={`/product/${product.id}`} />
+                                        <Qrcode url={`/product/${product._id}`} />
                                     </div>
                                 </div>
                             </Link>

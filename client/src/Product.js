@@ -27,8 +27,8 @@ export default class Product extends Component {
                 <div className="container">
                     <div className="row">
                         {this.state.videos.map(video =>
-                        <div className="col-md-4" key={video.id}>
-                            <Link to={`/player/${video.id}`}>
+                        <div className="col-md-4" key={video._id}>
+                            <Link to={`/player/${video.filename}`}>
                                 <div className="card border-0">
                                     <img src={`${process.env.REACT_APP_BASE_URL}${video.poster}`} alt={video.name} />
                                     <div className="card-body">
