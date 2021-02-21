@@ -13,6 +13,9 @@ import Product from './Product';
 import './App.css';
 
 function App() {
+  document.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+});
   return (
     <Router>
       <Switch>

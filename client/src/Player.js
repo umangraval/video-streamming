@@ -17,12 +17,14 @@ class Player extends Component {
             console.log(error);
         }
     }
+    
+    
     render() {
     
         return (
             <div className="App">
                 <header className="App-header">
-                    <video controls autoPlay>
+                    <video controls autoPlay controlsList="nodownload" >
                         <source src={`${process.env.REACT_APP_BASE_URL}/video/${this.state.videoId}`} type="video/mp4"></source>
                     </video>
                     <h1>{ this.state.videoData.name }</h1>
