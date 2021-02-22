@@ -1,0 +1,22 @@
+{
+  "name": "video-streamming",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"nodemon ./server/server.js\" \"npm start --prefix ./client/\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umangraval/video-streamming.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/umangraval/video-streamming/issues"
+  },
+  "homepage": "https://github.com/umangraval/video-streamming#readme",
+  "dependencies": {
+    "concurrently": "^6.0.0"
+  }
+}

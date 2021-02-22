@@ -1,5 +1,5 @@
 import axios from 'axios';
- 
+import Select from 'react-select';
 import React,{Component} from 'react';
  
 class App extends Component {
@@ -8,29 +8,49 @@ class App extends Component {
     this.state = {
       name: '',
       progress: null,
-      productId: '',
+      productId: null,
+      products: [],
       file: {},
-      success: false,
+      msg: null,
     };
     this.onChange = this.onChange.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.fileUpdateHandler = this.fileUpdateHandler.bind(this);
-    // this.progressHandler = this.progressHandler.bind(this);
-    // this.deleteHandler = this.deleteHandler.bind(this);
 
   }
 
-    
+  async componentDidMount() {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/products`);
+        const data = await response.json();
+        this.setState({ ...this.state, products: [...data] });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
   onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-    this.setState({ [e.target.productId]: e.target.value });
+    // this.setState({ name: e.target.value });
+    console.log(e);
+    this.setState({ [e.target.name]: e.target.value  });
   }
+  
+  async handleSelectChange(e) {
+    // console.log({ [e.name]: e.value });
+    this.setState({ [e.name]: e.value });
+  }
+
 
   async onSubmit(e) {
     try {
       e.preventDefault();
       // console.log(this.state.file);
-      // if (!this.state.file.name) return;
+      if(!this.state.productId) {
+        this.setState({ ...this.state, msg: 'Product Needed'})
+        return;
+      }
+      if (!this.state.file.name) return;
       const fileData = new FormData();
       fileData.append('name', this.state.name);
       fileData.append('productId', this.state.productId);
@@ -42,10 +62,11 @@ class App extends Component {
       this.setState({
         name: '',
         file: {},
-        productId: '',
+        productId: '0',
         progress: null,
-        success: true,
+        msg: 'Success',
       });
+      // this.props.history.push('/');
     } catch (error) {
       this.setState({ success: false });
       console.log(error);
@@ -81,7 +102,7 @@ class App extends Component {
 
     render() {
       const {
-        name, file, productId, success
+        name, file, msg, products
       } = this.state;
   
       return (
@@ -120,6 +141,7 @@ class App extends Component {
               ) : null} */}
             </label>
             <input
+            required
               type="file"
               id="filefield"
               className="upload__media--input"
@@ -128,6 +150,7 @@ class App extends Component {
           </div>
           <div className="upload__form__details">
             <input
+            required
               type="text"
               className="upload__form__input"
               placeholder="Media Name"
@@ -135,21 +158,24 @@ class App extends Component {
               name="name"
               onChange={this.onChange}
             />
-            <input
-              type="text"
-              className="upload__form__input"
-              placeholder="Product ID"
-              value={productId}
+             <Select
+             options={products.map((p) => {
+              return {
+                label: p.name,
+                value: p._id,
+                name: "productId",
+              };
+            })}
+            defaultValue={{ label: "Select Product", value: 0 }}
               name="productId"
-              onChange={this.onChange}
-            />
+              onChange={this.handleSelectChange}/>
             <br />
             <button type="submit" className="upload__form__submit">
                             UPLOAD
             </button>
           </div>
         </form>
-        { success ? (<h1>Success</h1>): (<></>)}
+        { msg ? (<h1>{msg}</h1>): (<></>)}
       </div>
 
       );

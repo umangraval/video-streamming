@@ -165,7 +165,7 @@ app.get('/products', async function(req, res) {
 
 // ==========================================================
 app.get('/video/:name/poster', function(req, res) {
-  thumbsupply.generateThumbnail(`assets/${req.params.name}.mp4`)
+  thumbsupply.generateThumbnail(__dirname + `/assets/${req.params.name}.mp4`)
     .then(thumb => res.sendFile(thumb))
     .catch(err => console.log(err))
 });
@@ -178,7 +178,7 @@ app.get('/video/:name/poster', function(req, res) {
 // });
 
 app.get('/video/:id', function(req, res) {
-  const path = `assets/${req.params.id}.mp4`;
+  const path = __dirname + `/assets/${req.params.id}.mp4`;
   const stat = fs.statSync(path);
   const fileSize = stat.size;
   const range = req.headers.range;
