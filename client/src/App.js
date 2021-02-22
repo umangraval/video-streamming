@@ -10,6 +10,7 @@ import Player from './Player';
 import Qrcode from './Qrcode';
 import Upload from './Upload';
 import Product from './Product';
+import NewProduct from './NewProduct';
 import './App.css';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route exact path="/" component={Home}></Route>
         <Route path="/qrcode" component={Qrcode}></Route>
         <Route path="/upload" component={Upload}></Route>
+        <Route path="/newproduct" component={NewProduct}></Route>
         <Route path="/player/:id" component={Player}></Route>
         <Route path="/product/:id" component={Product}></Route>
       </Switch>
