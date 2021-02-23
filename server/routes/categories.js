@@ -1,5 +1,7 @@
 const express = require('express');
+const fs = require('fs');
 const { Category } = require('../model/Category');
+const { Video } = require('../model/Video');
 const notLoggedInValidator = require('../validation/notLoggedInValidator');
 
 const app = express();
@@ -20,7 +22,7 @@ app.get('/categories', async function(req, res) {
 
 app.delete('/delete/:id', notLoggedInValidator, async function(req, res) {
     const { id } = req.params;
-    const category = await Category.findByIdAndDelete(id);
+    const category = await Category.findById(id);
     const media = await Video.find({ categoryname: category.name });
     media.forEach(e => {
       const path = process.env.STORAGE +`/${e.filename}.mp4`
@@ -32,6 +34,7 @@ app.delete('/delete/:id', notLoggedInValidator, async function(req, res) {
         //file removed
       })
     });
+    await Category.findByIdAndDelete(id);
     await Video.deleteMany({ categoryname: category.name });
     res.json('deleted');
   });

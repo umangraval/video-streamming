@@ -92,7 +92,7 @@ app.get('/video/:id', function(req, res) {
 
 app.delete('/delete/:id', notLoggedInValidator, async (req, res) => {
     const { id } = req.params;
-    const media = await Video.findOne(id);
+    const media = await Video.findById(id);
     const path = process.env.STORAGE +`/${media.filename}.mp4`
     fs.unlink(path, (err) => {
       if (err) {
