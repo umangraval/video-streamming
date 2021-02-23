@@ -1,6 +1,7 @@
 const express = require('express');
 const cors  = require('cors');
 const bodyParser = require('body-parser');
+const session = require('express-session');
 const mongoose = require('mongoose');
 const routes = require('./routes/index');
 require('dotenv').config();
@@ -30,6 +31,15 @@ mongoose.connection.once('open', () => {
 mongoose.connection.on('disconnected', () => {
   console.log('Mongoose default connection disconnected');
 });
+
+app.use(
+  session({
+      name: process.env.SESS_NAME,
+      secret: process.env.SESS_SECRET,
+      cookie: { maxAge: 24 * 60 * 60 * 1000 },
+  }),
+);
+
 
 // ==========================================================
 app.get('/test', function(req, res) {
