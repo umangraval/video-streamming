@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Qrcode from './Qrcode';
+import Qrcode from '../components/Qrcode';
 export default class Home extends Component {
     constructor() {
         super();

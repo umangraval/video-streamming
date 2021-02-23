@@ -7,7 +7,6 @@ import {
 // import { BrowserHistory } from 'react-router'
 import Home from './Home';
 import Player from './Player';
-import Qrcode from './Qrcode';
 import Upload from './Upload';
 import Product from './Product';
 import NewProduct from './NewProduct';
@@ -22,7 +21,6 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/" component={Home}></Route>
-        <Route path="/qrcode" component={Qrcode}></Route>
         <Route path="/upload" component={Upload}></Route>
         <Route path="/newproduct" component={NewProduct}></Route>
         <Route path="/scanner" component={Scanner}></Route>
