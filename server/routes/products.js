@@ -1,9 +1,10 @@
 const express = require('express');
 const { Product } = require('../model/Product');
+const notLoggedInValidator = require('../validation/notLoggedInValidator');
 
 const app = express();
 
-app.post('/', async function(req, res) {
+app.post('/', notLoggedInValidator, async function(req, res) {
     const { name } = req.body;
     const newProduct = new Product();
     newProduct.name = name;
@@ -17,7 +18,7 @@ app.get('/products', async function(req, res) {
     res.json(products);
   });
 
-app.delete('/delete/:id', async function(req, res) {
+app.delete('/delete/:id', notLoggedInValidator, async function(req, res) {
   const { id } = req.params;
   const product = await Product.findByIdAndDelete(id);
   const media = await Video.find({ productId: product._id });

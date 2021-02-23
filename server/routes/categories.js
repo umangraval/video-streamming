@@ -1,9 +1,10 @@
 const express = require('express');
 const { Category } = require('../model/Category');
+const notLoggedInValidator = require('../validation/notLoggedInValidator');
 
 const app = express();
 
-app.post('/', async function(req, res) {
+app.post('/', notLoggedInValidator, async function(req, res) {
     const { name } = req.body;
     const newCategory = new Category();
     newCategory.name = name;
@@ -17,7 +18,7 @@ app.get('/categories', async function(req, res) {
     res.json(categories);
   });
 
-app.delete('/delete/:id', async function(req, res) {
+app.delete('/delete/:id', notLoggedInValidator, async function(req, res) {
     const { id } = req.params;
     const category = await Category.findByIdAndDelete(id);
     const media = await Video.find({ categoryname: category.name });

@@ -3,6 +3,7 @@ const fs = require('fs');
 const thumbsupply = require('thumbsupply');
 const multer = require('multer');
 const { Video } = require('../model/Video');
+const notLoggedInValidator = require('../validation/notLoggedInValidator');
 
 const app = express();
 
@@ -21,7 +22,7 @@ var storage = multer.diskStorage({
       },
   });
   
-  app.post('/upload', upload.single('file'), async function (req, res) {
+  app.post('/upload', notLoggedInValidator, upload.single('file'), async function (req, res) {
     const { name, productId, categoryname } = req.body;
     const { filename } = req.file; 
     const newVideo = new Video();
@@ -89,7 +90,7 @@ app.get('/video/:id', function(req, res) {
     }
   });
 
-app.delete('/delete/:id', async (req, res) => {
+app.delete('/delete/:id', notLoggedInValidator, async (req, res) => {
     const { id } = req.params;
     const media = await Video.findOne(id);
     const path = process.env.STORAGE +`/${media.filename}.mp4`

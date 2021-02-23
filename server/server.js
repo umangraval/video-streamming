@@ -36,6 +36,8 @@ app.use(
   session({
       name: process.env.SESS_NAME,
       secret: process.env.SESS_SECRET,
+      saveUninitialized: false,
+      resave: false,
       cookie: { maxAge: 24 * 60 * 60 * 1000 },
   }),
 );
@@ -46,6 +48,7 @@ app.get('/test', function(req, res) {
   res.send('working');
 });
 
+app.use('/auth', routes.authRoutes);
 app.use('/media', routes.mediaRoutes);
 app.use('/product', routes.productRoutes);
 app.use('/category', routes.categoryRoutes);
