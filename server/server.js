@@ -1,10 +1,10 @@
-const express = require('express');
-const cors  = require('cors');
-const bodyParser = require('body-parser');
-const session = require('express-session');
-const mongoose = require('mongoose');
-const routes = require('./routes/index');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const session = require("express-session");
+const mongoose = require("mongoose");
+const routes = require("./routes/index");
+require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -21,38 +21,37 @@ app.use(cors());
 // ==========================================================
 
 // Database Connection
-mongoose.connect("mongodb://localhost/mydb", {useNewUrlParser: true});
+mongoose.connect("mongodb://localhost/mydb", { useNewUrlParser: true });
 
-mongoose.connection.once('open', () => {
-  console.log('MongoDB Connected');
+mongoose.connection.once("open", () => {
+  console.log("MongoDB Connected");
 });
 
 // When the connection is disconnected:
-mongoose.connection.on('disconnected', () => {
-  console.log('Mongoose default connection disconnected');
+mongoose.connection.on("disconnected", () => {
+  console.log("Mongoose default connection disconnected");
 });
 
 app.use(
   session({
-      name: process.env.SESS_NAME,
-      secret: process.env.SESS_SECRET,
-      saveUninitialized: false,
-      resave: false,
-      cookie: { maxAge: 24 * 60 * 60 * 1000 },
-  }),
+    name: process.env.SESS_NAME,
+    secret: process.env.SESS_SECRET,
+    saveUninitialized: false,
+    resave: false,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 }
+  })
 );
 
-
 // ==========================================================
-app.get('/test', function(req, res) {
-  res.send('working');
+app.get("/test", function(req, res) {
+  res.send("working");
 });
 
-app.use('/auth', routes.authRoutes);
-app.use('/media', routes.mediaRoutes);
-app.use('/product', routes.productRoutes);
-app.use('/category', routes.categoryRoutes);
+app.use("/auth", routes.authRoutes);
+app.use("/media", routes.mediaRoutes);
+app.use("/product", routes.productRoutes);
+app.use("/category", routes.categoryRoutes);
 
-app.listen(port, function () {
-  console.log(`Listening on port ${port}!`)
+app.listen(port, function() {
+  console.log(`Listening on port ${port}!`);
 });
