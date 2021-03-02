@@ -1,12 +1,18 @@
-import React from "react";
+import React, { Component } from "react";
+import API from "../API";
 
+export default class Card extends Component {
 
-const Card = (props) => {
-    return(
-        <div className="Card">
-            <h1 className="Card--Heading">{props.name}</h1>
+  render() {
+    return (
+      <div className="col-sm-3">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">{this.props.name}</h5>
+            <div onClick={() => {this.props.onDelete({use: this.props.use, _id: this.props._id})}} className="btn btn-danger">Delete</div>
+          </div>
         </div>
-    )
+      </div>
+    );
+  }
 }
-
-export default Card;

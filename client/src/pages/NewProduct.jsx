@@ -1,47 +1,50 @@
-import axios from 'axios';
-import React,{Component} from 'react';
-import API from '../API';
-import Card from '../components/Card';
- 
+import axios from "axios";
+import React, { Component } from "react";
+import API from "../API";
+import Card from "../components/Card";
+
 export default class NewProduct extends Component {
   constructor() {
     super();
     this.state = {
-      name: '',
+      name: "",
       msg: null,
       products: []
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-
   }
 
   async componentDidMount() {
     try {
-        const presponse = await fetch(`${process.env.REACT_APP_BASE_URL}/product/products`);
-        const pdata = await presponse.json();
-        this.setState({ ...this.state, products: [...pdata] });
+      const presponse = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/product/products`
+      );
+      const pdata = await presponse.json();
+      this.setState({ ...this.state, products: [...pdata] });
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-  } 
+  }
 
   onChange(e) {
-    this.setState({ [e.target.name]: e.target.value  });
+    this.setState({ [e.target.name]: e.target.value });
   }
- 
 
   async onSubmit(e) {
     try {
       e.preventDefault();
-      if(!this.state.name) {
-        this.setState({ ...this.state, msg: 'Product Name Needed'})
+      if (!this.state.name) {
+        this.setState({ ...this.state, msg: "Product Name Needed" });
         return;
       }
-      await API.post(`${process.env.REACT_APP_BASE_URL}/product/`, { name: this.state.name });
+      const data = await API.post(`${process.env.REACT_APP_BASE_URL}/product/`, {
+        name: this.state.name
+      });
       this.setState({
-        name: '',
-        msg: 'Success',
+        name: "",
+        msg: "Success",
+        products: [ ...this.state.products, data.data]
       });
       // this.props.history.push('/');
     } catch (error) {
@@ -50,19 +53,32 @@ export default class NewProduct extends Component {
     }
   }
 
+  async onDelete(e) {
+    try {
+      await API.delete(
+        `${process.env.REACT_APP_BASE_URL}/product/delete/${e._id}`
+      );
+      this.setState({
+        ...this.state,
+        products: this.state.products.filter(function(product) {
+          return product._id !== e._id;
+        })
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-    render() {
-      const {
-        name, msg, products
-      } = this.state;
-  
-      return (
-        <div className="upload">
+  render() {
+    const { name, msg, products } = this.state;
+
+    return (
+      <div className="upload">
         <h1>Upload New Product :</h1>
         <form className="upload__form" onSubmit={this.onSubmit}>
           <div className="upload__form__details">
             <input
-            required
+              required
               type="text"
               className="upload__form__input"
               placeholder="Product Name"
@@ -71,20 +87,32 @@ export default class NewProduct extends Component {
               onChange={this.onChange}
             />
             <button type="submit" className="upload__form__submit">
-                            UPLOAD
+              UPLOAD
             </button>
           </div>
         </form>
-        { msg ? (<h1>{msg}</h1>): (<></>)}
+        {msg ? <h1>{msg}</h1> : <></>}
         <h2>All Products</h2>
-        {
-          products.map(e => 
-            <Card name={e.name} />
-          )
-        }
+        {products.map(e => (
+          <div className="col-sm-3">
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">{e.name}</h5>
+                <div
+                  onClick={() => {
+                    this.onDelete({
+                      _id: e._id
+                    });
+                  }}
+                  className="btn btn-danger"
+                >
+                  Delete
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-
-      );
-    }
+    );
   }
- 
+}

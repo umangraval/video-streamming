@@ -85,7 +85,6 @@ export default class App extends Component {
             />
           )}
         />
-
               <Route path="/newproduct" component={NewProduct}></Route>
               <Route path="/newcategory" component={NewCategory}></Route>
               <Route path="/player/:id" component={Player}></Route>
