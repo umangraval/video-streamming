@@ -1,9 +1,9 @@
-import axios from 'axios';
 import Select from 'react-select';
 import React,{Component} from 'react';
 import { Redirect } from 'react-router-dom';
 import isEmpty from '../utils/isEmpty';
 import API from '../API'; 
+import axios from 'axios';
 class Upload extends Component {
   constructor() {
     super();
@@ -11,6 +11,7 @@ class Upload extends Component {
       name: '',
       progress: null,
       productId: null,
+      categoryname: null,
       products: [],
       categories: [],
       file: {},
@@ -45,6 +46,7 @@ class Upload extends Component {
   async handleSelectChange(e) {
     // console.log({ [e.name]: e.value });
     this.setState({ [e.name]: e.value });
+    console.log({[e.name]: e.value});
   }
 
   async logout() {
@@ -67,19 +69,23 @@ class Upload extends Component {
         this.setState({ ...this.state, msg: 'Product Needed'})
         return;
       }
+      console.log(this.state);
       if (!this.state.file.name) return;
       const fileData = new FormData();
       fileData.append('name', this.state.name);
       fileData.append('productId', this.state.productId);
+      fileData.append('categoryname', this.state.categoryname);
       fileData.append('file', this.state.file);
-      const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/media/upload`, fileData, { headers: {
+      const { data } = await API.post(`${process.env.REACT_APP_BASE_URL}/media/upload`, fileData, {headers: {
         'Content-Type': 'multipart/form-data'
       }});
       console.log(data);
       this.setState({
+        ...this.state,
         name: '',
         file: {},
-        productId: '0',
+        productId: null,
+        categoryname: null,
         progress: null,
         msg: 'Success',
       });
@@ -196,7 +202,7 @@ class Upload extends Component {
              options={categories.map((p) => {
               return {
                 label: p.name,
-                value: p._id,
+                value: p.name,
                 name: "categoryname",
               };
             })}

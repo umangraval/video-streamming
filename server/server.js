@@ -5,7 +5,6 @@ const session = require("express-session");
 const mongoose = require("mongoose");
 const routes = require("./routes/index");
 const setUser = require("./utils/setUser");
-const notLoggedInValidator = require("./validation/notLoggedInValidator");
 require("dotenv").config();
 
 const app = express();

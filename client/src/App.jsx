@@ -48,7 +48,7 @@ export default class App extends Component {
           <Router>
           <BrowserView>
           <Switch>
-        <Route
+        {/* <Route
           exact
           path="/"
           render={(props) => (
@@ -59,7 +59,8 @@ export default class App extends Component {
               updateUser={this.updateUser}
             />
           )}
-        />
+        /> */}
+        <Route path="/dashboard" component={Home}></Route>
         <Route
           exact
           path="/login"

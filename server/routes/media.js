@@ -4,7 +4,8 @@ const thumbsupply = require("thumbsupply");
 const multer = require("multer");
 const { Video } = require("../model/Video");
 const notLoggedInValidator = require("../validation/notLoggedInValidator");
-
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 const app = express();
 
 var storage = multer.diskStorage({
@@ -120,6 +121,7 @@ app.delete("/delete/:id", notLoggedInValidator, async (req, res) => {
       }
       //file removed
     });
+    await Video.findByIdAndDelete(id);
     return res.json("Media Deleted");
   } catch (e) {
     console.log("Error", e);
