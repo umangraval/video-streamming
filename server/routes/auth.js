@@ -41,7 +41,7 @@ app.post("/login", isLoggedInValidator, async (req, res) => {
     const matched = await bcrypt.compare(password, user.password);
     if (!matched) return res.status(400).json("passwordIncorrect");
 
-    req.session.userId = user._id;
+    req.session.userId = user._id;    
     const payload = {
       _id: user._id,
       username: user.username
