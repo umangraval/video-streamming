@@ -1,15 +1,15 @@
 import axios from 'axios';
 import React,{Component} from 'react';
 import API from '../API';
-import Card from '../components/Card';
+import Card from "../components/Card";
  
-export default class NewProduct extends Component {
+export default class NewCategory extends Component {
   constructor() {
     super();
     this.state = {
       name: '',
       msg: null,
-      products: []
+      categories: []
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -18,9 +18,9 @@ export default class NewProduct extends Component {
 
   async componentDidMount() {
     try {
-        const presponse = await fetch(`${process.env.REACT_APP_BASE_URL}/product/products`);
-        const pdata = await presponse.json();
-        this.setState({ ...this.state, products: [...pdata] });
+        const cresponse = await fetch(`${process.env.REACT_APP_BASE_URL}/category/categories`);
+        const cdata = await cresponse.json();
+        this.setState({ ...this.state, categories: [...cdata] });
     } catch (error) {
         console.log(error);
     }
@@ -35,10 +35,10 @@ export default class NewProduct extends Component {
     try {
       e.preventDefault();
       if(!this.state.name) {
-        this.setState({ ...this.state, msg: 'Product Name Needed'})
+        this.setState({ ...this.state, msg: 'Category Name Needed'})
         return;
       }
-      await API.post(`${process.env.REACT_APP_BASE_URL}/product/`, { name: this.state.name });
+      await API.post(`${process.env.REACT_APP_BASE_URL}/category/`, { name: this.state.name });
       this.setState({
         name: '',
         msg: 'Success',
@@ -53,19 +53,20 @@ export default class NewProduct extends Component {
 
     render() {
       const {
-        name, msg, products
+        name, msg, categories
       } = this.state;
   
       return (
+        <div>
         <div className="upload">
-        <h1>Upload New Product :</h1>
+        <h1>Upload New Category :</h1>
         <form className="upload__form" onSubmit={this.onSubmit}>
           <div className="upload__form__details">
             <input
             required
               type="text"
               className="upload__form__input"
-              placeholder="Product Name"
+              placeholder="Category Name"
               value={name}
               name="name"
               onChange={this.onChange}
@@ -76,14 +77,15 @@ export default class NewProduct extends Component {
           </div>
         </form>
         { msg ? (<h1>{msg}</h1>): (<></>)}
-        <h2>All Products</h2>
+      </div>
+      <h2>All categories</h2>
         {
-          products.map(e => 
+          categories.map(e => 
             <Card name={e.name} />
           )
         }
+      
       </div>
-
       );
     }
   }

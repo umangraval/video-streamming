@@ -7,6 +7,7 @@ import Player from "./pages/mobile/Player";
 import Upload from "./pages/Upload";
 import Product from "./pages/mobile/Product";
 import NewProduct from "./pages/NewProduct";
+import NewCategory from "./pages/NewCategory";
 import Scanner from "./pages/mobile/Scanner";
 import Login from "./pages/Login";
 import "./App.css";
@@ -86,6 +87,7 @@ export default class App extends Component {
         />
 
               <Route path="/newproduct" component={NewProduct}></Route>
+              <Route path="/newcategory" component={NewCategory}></Route>
               <Route path="/player/:id" component={Player}></Route>
               <Route path="/product/:id" component={Product}></Route>
               </Switch>

@@ -30,7 +30,7 @@ mongoose.connection.once("open", () => {
 
 // When the connection is disconnected:
 mongoose.connection.on("disconnected", () => {
-  console.log("Mongoose default connection disconnected");
+  console.log("Mongoose default connection Disconnected");
 });
 
 app.use(

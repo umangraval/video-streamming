@@ -12,6 +12,7 @@ class Upload extends Component {
       progress: null,
       productId: null,
       products: [],
+      categories: [],
       file: {},
       msg: null,
     };
@@ -25,9 +26,12 @@ class Upload extends Component {
   async componentDidMount() {
     // console.log('upload', this.props.user);
     try {
-        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/product/products`);
-        const data = await response.json();
-        this.setState({ ...this.state, products: [...data] });
+        const presponse = await fetch(`${process.env.REACT_APP_BASE_URL}/product/products`);
+        const pdata = await presponse.json();
+        this.setState({ ...this.state, products: [...pdata] });
+        const cresponse = await fetch(`${process.env.REACT_APP_BASE_URL}/category/categories`);
+        const cdata = await cresponse.json();
+        this.setState({ ...this.state, categories: [...cdata] });
     } catch (error) {
         console.log(error);
     }
@@ -120,7 +124,7 @@ class Upload extends Component {
       }
     
       const {
-        name, file, msg, products
+        name, file, msg, products, categories
       } = this.state;
       
       return (
@@ -186,6 +190,18 @@ class Upload extends Component {
             })}
             defaultValue={{ label: "Select Product", value: 0 }}
               name="productId"
+              onChange={this.handleSelectChange}/>
+            <br />
+            <Select
+             options={categories.map((p) => {
+              return {
+                label: p.name,
+                value: p._id,
+                name: "categoryname",
+              };
+            })}
+            defaultValue={{ label: "Select Category", value: 0 }}
+              name="categoryname"
               onChange={this.handleSelectChange}/>
             <br />
             <button type="submit" className="upload__form__submit">

@@ -3,7 +3,6 @@ const { User } = require('../model/User');
 //= =========================================================================
 const setUser = async (req, res, next) => {
     const { userId } = req.session;
-    console.log(req.session);
     if (!isEmpty(userId)) {
         const user = await User.findById(userId)
             .lean()
