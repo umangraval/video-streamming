@@ -25,7 +25,7 @@ export default class NewProduct extends Component {
         this.setState({ ...this.state, msg: 'Product Name Needed'})
         return;
       }
-      await axios.post(`${process.env.REACT_APP_BASE_URL}/product`, { name: this.state.name });
+      await axios.post(`${process.env.REACT_APP_BASE_URL}/product/`, { name: this.state.name });
       this.setState({
         name: '',
         msg: 'Success',

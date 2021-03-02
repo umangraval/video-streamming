@@ -10,7 +10,7 @@ export default class Home extends Component {
     }
     async componentDidMount() {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/products`);
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/product/products`);
             const data = await response.json();
             console.log(data);
             this.setState({ products: [...data] });

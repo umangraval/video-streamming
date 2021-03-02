@@ -1,34 +1,106 @@
-import React from 'react';
-import {
-  Route,
-  BrowserRouter as Router,
-  Switch,
-} from "react-router-dom";
+import React, { Component, Suspense } from "react";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import { BrowserView, MobileView } from "react-device-detect";
 // import { BrowserHistory } from 'react-router'
-import Home from './Home';
-import Player from './Player';
-import Upload from './Upload';
-import Product from './Product';
-import NewProduct from './NewProduct';
-import Scanner from './Scanner';
-import './App.css';
+import Home from "./pages/Home";
+import Player from "./pages/mobile/Player";
+import Upload from "./pages/Upload";
+import Product from "./pages/mobile/Product";
+import NewProduct from "./pages/NewProduct";
+import Scanner from "./pages/mobile/Scanner";
+import Login from "./pages/Login";
+import "./App.css";
 
-function App() {
-  document.addEventListener('contextmenu', (event) => {
-    event.preventDefault();
-});
-  return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={Home}></Route>
-        <Route path="/upload" component={Upload}></Route>
-        <Route path="/newproduct" component={NewProduct}></Route>
-        <Route path="/scanner" component={Scanner}></Route>
-        <Route path="/player/:id" component={Player}></Route>
-        <Route path="/product/:id" component={Product}></Route>
-      </Switch>
-    </Router>
-  );
+export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      user: undefined,
+      error: undefined
+    };
+    this.setError = this.setError.bind(this);
+    this.clearError = this.clearError.bind(this);
+    this.updateUser = this.updateUser.bind(this);
+  }
+
+  setError(error) {
+    this.setState({ error });
+  }
+
+  clearError() {
+    this.setState({ error: null });
+  }
+
+  updateUser(user) {
+    this.setState({ user });
+  }
+
+  // document.addEventListener('contextmenu', (event) => {
+  //   event.preventDefault();
+  // })
+
+  render() {
+    const { user } = this.state;
+    return (
+      <>
+          
+          <Router>
+          <BrowserView>
+          <Switch>
+        <Route
+          exact
+          path="/"
+          render={(props) => (
+            <Login
+              {...props}
+              user={user}
+              setError={this.setError}
+              updateUser={this.updateUser}
+            />
+          )}
+        />
+        <Route
+          exact
+          path="/login"
+          render={(props) => (
+            <Login
+              {...props}
+              user={user}
+              setError={this.setError}
+              updateUser={this.updateUser}
+            />
+          )}
+        />
+          
+        <Route
+          exact
+          path="/upload"
+          render={(props) => (
+            <Upload
+              {...props}
+              user={user}
+              updateUser={this.updateUser}
+              setError={this.setError}
+            />
+          )}
+        />
+
+              <Route path="/newproduct" component={NewProduct}></Route>
+              <Route path="/player/:id" component={Player}></Route>
+              <Route path="/product/:id" component={Product}></Route>
+              </Switch>
+          </BrowserView>
+          <MobileView>
+            <Suspense fallback={<div>Loading...</div>}></Suspense>
+            <Switch>
+              <Route exact path="/" component={Home}></Route>
+              <Route path="/scanner" component={Scanner}></Route>
+              <Route path="/player/:id" component={Player}></Route>
+              <Route path="/product/:id" component={Product}></Route>
+            </Switch>
+          </MobileView>
+          </Router>
+      </>
+    );
+  }
 }
-
-export default App;

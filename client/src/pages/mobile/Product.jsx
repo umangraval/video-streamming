@@ -11,7 +11,7 @@ export default class Product extends Component {
     }
     async componentDidMount() {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/videos/${this.props.match.params.id}`);
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/media/videos/${this.props.match.params.id}`);
             const data = await response.json();
             console.log(data);
             this.setState({ videos: [...data] });

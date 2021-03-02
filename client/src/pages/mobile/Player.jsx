@@ -10,7 +10,7 @@ class Player extends Component {
     }
     async componentDidMount() {
         try {
-            const res = await fetch(`${process.env.REACT_APP_BASE_URL}/video/${this.state.videoId}/data`);
+            const res = await fetch(`${process.env.REACT_APP_BASE_URL}/media/video/${this.state.videoId}/data`);
             const data = await res.json();
             this.setState({ videoData: data });
         } catch (error) {
@@ -25,7 +25,7 @@ class Player extends Component {
             <div className="App">
                 <header className="App-header">
                     <video controls autoPlay controlsList="nodownload" >
-                        <source src={`${process.env.REACT_APP_BASE_URL}/video/${this.state.videoId}`} type="video/mp4"></source>
+                        <source src={`${process.env.REACT_APP_BASE_URL}/media/video/${this.state.videoId}`} type="video/mp4"></source>
                     </video>
                     <h1>{ this.state.videoData.name }</h1>
                     <button  onClick={() => { this.props.history.goBack() }}>Back</button>

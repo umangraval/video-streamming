@@ -1,8 +1,10 @@
 import axios from 'axios';
 import Select from 'react-select';
 import React,{Component} from 'react';
- 
-class App extends Component {
+import { Redirect } from 'react-router-dom';
+import isEmpty from '../utils/isEmpty';
+import API from '../API'; 
+class Upload extends Component {
   constructor() {
     super();
     this.state = {
@@ -21,18 +23,18 @@ class App extends Component {
   }
 
   async componentDidMount() {
+    // console.log('upload', this.props.user);
     try {
-        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/products`);
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/product/products`);
         const data = await response.json();
         this.setState({ ...this.state, products: [...data] });
     } catch (error) {
         console.log(error);
     }
-}
+} 
 
   onChange(e) {
     // this.setState({ name: e.target.value });
-    console.log(e);
     this.setState({ [e.target.name]: e.target.value  });
   }
   
@@ -40,6 +42,17 @@ class App extends Component {
     // console.log({ [e.name]: e.value });
     this.setState({ [e.name]: e.value });
   }
+
+  async logout() {
+    await API.post(`/auth/logout`).then((res) => {
+      if (res.status === 200) {
+        this.props.updateUser(undefined);
+      }
+    }).catch((error) => {
+      console.log('Logout error', error);
+    });
+  };
+
 
 
   async onSubmit(e) {
@@ -55,7 +68,7 @@ class App extends Component {
       fileData.append('name', this.state.name);
       fileData.append('productId', this.state.productId);
       fileData.append('file', this.state.file);
-      const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/upload`, fileData, { headers: {
+      const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/media/upload`, fileData, { headers: {
         'Content-Type': 'multipart/form-data'
       }});
       console.log(data);
@@ -101,10 +114,15 @@ class App extends Component {
 
 
     render() {
+      const { user } = this.props;
+      if (isEmpty(user)) {
+        return <Redirect to="/login" />;
+      }
+    
       const {
         name, file, msg, products
       } = this.state;
-  
+      
       return (
         <div className="upload">
         <h1>Upload New Media :</h1>
@@ -175,6 +193,9 @@ class App extends Component {
             </button>
           </div>
         </form>
+        <button onClick={() => {this.logout()}}>
+                            Logout
+            </button>
         { msg ? (<h1>{msg}</h1>): (<></>)}
       </div>
 
@@ -182,4 +203,4 @@ class App extends Component {
     }
   }
  
-  export default App;
+  export default Upload;
