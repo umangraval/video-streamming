@@ -57,7 +57,7 @@ app.get("/videos/:productId", async function(req, res) {
 
 app.get("/video/:name/poster", function(req, res) {
   thumbsupply
-    .generateThumbnail(process.env.STORAGE + `/1614750158332.mp4`)
+    .generateThumbnail(process.env.STORAGE + `/${req.params.name}.mp4`)
     .then(thumb => res.sendFile(thumb))
     .catch(err => console.log(err));
 });
