@@ -20,7 +20,7 @@ export default class Qrcode extends Component {
       }
     render() {
         // const url = `http://192.168.0.104:3000`;
-        const url = `${process.env.REACT_APP_BASE_URL}${this.state.url}`;
+        const url = `${process.env.REACT_APP_CLIENT_URL}${this.state.url}`;
         return (
             <div>
                 <QRCode

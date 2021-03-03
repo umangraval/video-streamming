@@ -36,7 +36,7 @@ app.post("/upload", notLoggedInValidator, upload.single("file"), async function(
     newVideo.productId = productId;
     newVideo.categoryname = categoryname;
     newVideo.filename = filename.split(".")[0];
-    newVideo.poster = `/video/${filename.split(".")[0]}/poster`;
+    newVideo.poster = `/media/video/${filename.split(".")[0]}/poster`;
     const data = await newVideo.save();
     res.json(data);
   } catch (e) {
@@ -57,7 +57,7 @@ app.get("/videos/:productId", async function(req, res) {
 
 app.get("/video/:name/poster", function(req, res) {
   thumbsupply
-    .generateThumbnail(process.env.STORAGE + `/${req.params.name}.mp4`)
+    .generateThumbnail(process.env.STORAGE + `/1614750158332.mp4`)
     .then(thumb => res.sendFile(thumb))
     .catch(err => console.log(err));
 });
@@ -75,7 +75,7 @@ app.get("/video/:id/data", async function(req, res) {
 
 app.get("/video/:id", function(req, res) {
   try {
-    const path = process.env.STORAGE + `/${req.params.id}.jpg`;
+    const path = process.env.STORAGE + `/${req.params.id}.mp4`;
     const stat = fs.statSync(path);
     const fileSize = stat.size;
     const range = req.headers.range;
