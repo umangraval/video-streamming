@@ -13,6 +13,7 @@ import Login from "./pages/Login";
 import Medias from "./pages/mobile/Medias";
 import Navbar from "./components/Navbar";
 import MediaUpload from "./pages/MediaUpload";
+import Manage from "./pages/Manage";
 import "./App.css";
 
 export default class App extends Component {
@@ -63,7 +64,9 @@ export default class App extends Component {
             />
           )}
         /> */}
-        <Route path="/dashboard" component={Home}></Route>
+        <Route path="/manage" component={Manage}></Route>
+
+        {/* <Route path="/" component={Home}></Route> */}
         <Route path="/up" component={MediaUpload}></Route>
         <Route
           exact

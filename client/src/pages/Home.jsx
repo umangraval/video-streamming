@@ -22,9 +22,17 @@ export default class Home extends Component {
   }
   render() {
     return (
-      <div>
-        <div className="container">
-          <div className="row">
+        <div className="dash p-3">
+          <div className="row opt">
+            <div className="col">
+            <button type="button" class="btn btn-outline-primary btn-lg btn-block dash-btn">Upload</button>
+            </div>
+            <div className="col">
+            <button type="button" class="btn btn-outline-info btn-lg btn-block dash-btn">Manage</button>
+            </div>
+          </div>
+          
+          {/* <div className="row">
             {this.state.products.map(product => (
               <div className="col-md-4" key={product._id}>
                 <div className="card border-0">
@@ -40,39 +48,8 @@ export default class Home extends Component {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
-        {/* <div className="d-flex justify-content-center align-items-center dash p-3">
-          <div class="card shadow p-3 mb-5 bg-white rounded">
-            <div class="card-body">
-              <form>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Email address</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
-                    placeholder="Enter email"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputPassword1">Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="exampleInputPassword1"
-                    placeholder="Password"
-                  />
-                </div>
-                <button type="submit" class="btn btn-primary">
-                  Login
-                </button>
-              </form>
-            </div>
-          </div>
-        </div> */}
-      </div>
     );
   }
 }

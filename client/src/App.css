@@ -87,3 +87,20 @@ h1 {
 .dash {
   height: 80vh;
 }
+
+.opt {
+  margin: auto;
+  margin-top: 30px;
+  min-height: 30vh;
+  width: 70%;
+  padding: 10px;
+}
+
+.dash-btn {
+  padding: 50px 54px;
+  font-size: 3em;
+}
+
+.dash-btn:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
