@@ -83,3 +83,7 @@ h1 {
      -moz-box-shadow: 0 3px 20px -4px gray;
           box-shadow: 0 3px 20px -4px gray;
 }
+
+.dash {
+  height: 80vh;
+}

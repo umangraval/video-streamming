@@ -93,7 +93,7 @@ export default class Product extends Component {
               </div>
             ))}
           </div> */}
-        <footer className="footer">
+        {/* <footer className="footer">
             <button
               className="btn btn-primary"
               type="submit"
@@ -103,7 +103,7 @@ export default class Product extends Component {
             >
               Back
             </button>
-        </footer>
+        </footer> */}
       </div>
     );
   }
