@@ -22,8 +22,8 @@ class Player extends Component {
     render() {
     
         return (
-            <div className="App">
-                <header className="App-header">
+            <div>
+                <header className="container">
                     <video controls autoPlay controlsList="nodownload" >
                         <source src={`${process.env.REACT_APP_BASE_URL}/media/video/${this.state.videoId}`} type="video/mp4"></source>
                     </video>

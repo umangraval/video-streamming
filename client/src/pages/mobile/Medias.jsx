@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import API from "../../API";
 // import Upload from './Upload';
 import "../../assets/footer.css";
+import "../../assets/medias.css";
 import "../../assets/category.css";
 
-
-export default class Product extends Component {
+export default class Medias extends Component {
   constructor() {
     super();
     this.state = {
@@ -45,24 +45,41 @@ export default class Product extends Component {
   render() {
     return (
       <div>
-        <nav class="navbar sticky-top navbar-light bg-light one-edge-shadow">
-  <span class="navbar-brand">Kajaria</span>
-</nav>
+        <nav className="navbar sticky-top navbar-light bg-light one-edge-shadow">
+          <span className="navbar-brand">BathRoom</span>
+        </nav>
+
         <div className="category-list">
-          <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              BathRoom
-              <span class="badge badge-primary badge-pill">4</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Kitchen
-              <span class="badge badge-primary badge-pill">2</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Living Room
-              <span class="badge badge-primary badge-pill">1</span>
-            </li>
-          </ul>
+          <div className="card mb-2">
+            <div className="row">
+              <div className="col">
+                <div className="card-body">
+                  <h5 className="card-title">Highlighter</h5>
+                </div>
+              </div>
+              <div className="col">
+                <img
+                  src="https://jumanji.livspace-cdn.com/magazine/wp-content/uploads/sites/2/2020/07/16191441/Types-Of-Tiles-Ceramic.jpg"
+                  alt="img"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="card mb-2">
+          <div className="row">
+              <div className="col">
+                <div className="card-body">
+                  <h5 className="card-title">Flooring</h5>
+                </div>
+              </div>
+              <div className="col">
+                <img
+                  src="https://www.supergres.com/images/stories/flexicontent/m_anteprima_brecce_bagno-riv-5.jpg"
+                  alt="img"
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* <div className="row">
@@ -94,15 +111,15 @@ export default class Product extends Component {
             ))}
           </div> */}
         <footer className="footer">
-            <button
-              className="btn btn-primary"
-              type="submit"
-              onClick={() => {
-                this.props.history.goBack();
-              }}
-            >
-              Back
-            </button>
+          <button
+            className="btn btn-primary"
+            type="submit"
+            onClick={() => {
+              this.props.history.goBack();
+            }}
+          >
+            Back
+          </button>
         </footer>
       </div>
     );

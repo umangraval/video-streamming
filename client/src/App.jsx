@@ -10,6 +10,7 @@ import NewProduct from "./pages/NewProduct";
 import NewCategory from "./pages/NewCategory";
 import Scanner from "./pages/mobile/Scanner";
 import Login from "./pages/Login";
+import Medias from "./pages/mobile/Medias";
 import "./App.css";
 
 export default class App extends Component {
@@ -98,6 +99,7 @@ export default class App extends Component {
               <Route exact path="/" component={Home}></Route>
               <Route path="/scanner" component={Scanner}></Route>
               <Route path="/player/:id" component={Player}></Route>
+              <Route path="/media/:id" component={Medias}></Route>
               <Route path="/product/:id" component={Product}></Route>
             </Switch>
           </MobileView>
