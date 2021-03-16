@@ -11,6 +11,8 @@ import NewCategory from "./pages/NewCategory";
 import Scanner from "./pages/mobile/Scanner";
 import Login from "./pages/Login";
 import Medias from "./pages/mobile/Medias";
+import Navbar from "./components/Navbar";
+import MediaUpload from "./pages/MediaUpload";
 import "./App.css";
 
 export default class App extends Component {
@@ -45,7 +47,7 @@ export default class App extends Component {
     const { user } = this.state;
     return (
       <>
-          
+        <Navbar />
           <Router>
           <BrowserView>
           <Switch>
@@ -62,6 +64,7 @@ export default class App extends Component {
           )}
         /> */}
         <Route path="/dashboard" component={Home}></Route>
+        <Route path="/up" component={MediaUpload}></Route>
         <Route
           exact
           path="/login"
