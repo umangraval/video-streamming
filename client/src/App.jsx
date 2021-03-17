@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Player from "./pages/mobile/Player";
 import Upload from "./pages/Upload";
 import Product from "./pages/mobile/Product";
+import ProductView from "./pages/ProductView";
 import NewProduct from "./pages/NewProduct";
 import NewCategory from "./pages/NewCategory";
 import Scanner from "./pages/mobile/Scanner";
@@ -48,9 +49,9 @@ export default class App extends Component {
     const { user } = this.state;
     return (
       <>
-        <Navbar />
           <Router>
           <BrowserView>
+          <Navbar />
           <Switch>
         {/* <Route
           exact
@@ -64,9 +65,9 @@ export default class App extends Component {
             />
           )}
         /> */}
-        <Route path="/manage" component={Manage}></Route>
 
-        {/* <Route path="/" component={Home}></Route> */}
+        <Route path="/dashboard" component={Home}></Route>
+        <Route path="/manage" component={Manage}></Route>
         <Route path="/up" component={MediaUpload}></Route>
         <Route
           exact
@@ -96,7 +97,7 @@ export default class App extends Component {
               <Route path="/newproduct" component={NewProduct}></Route>
               <Route path="/newcategory" component={NewCategory}></Route>
               <Route path="/player/:id" component={Player}></Route>
-              <Route path="/product/:id" component={Product}></Route>
+              <Route path="/product/:id" component={ProductView}></Route>
               </Switch>
           </BrowserView>
           <MobileView>

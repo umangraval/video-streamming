@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 import QRCode from "qrcode.react";
 import "../assets/manage.css";
-export default class Manage extends Component {
+
+export default class ProductView extends Component {
   constructor() {
     super();
     this.state = {
@@ -38,6 +39,8 @@ export default class Manage extends Component {
     link.href = document.getElementsByClassName("QRCode")[0].toDataURL();
     link.click();
   }
+  handleClose = () => this.setState({ ...this.state, show: false });
+  handleShow = () => this.setState({ ...this.state, show: true });
 
   render() {
     const url = `${process.env.REACT_APP_CLIENT_URL}${this.state.url}`;
@@ -59,6 +62,7 @@ export default class Manage extends Component {
                 <button
                   type="button"
                   className="btn btn-outline-info"
+                  onClick={this.handleShow}
                 >
                   View
                 </button>
@@ -67,6 +71,25 @@ export default class Manage extends Component {
           </div>
 
         </div>
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <Modal.Body>Are you sure you want to delete?</Modal.Body>
+          <Modal.Footer>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={this.handleClose}
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={this.handleClose}
+            >
+              Delete
+            </button>
+          </Modal.Footer>
+        </Modal>
         {/* <div className="row">
             {this.state.products.map(product => (
               <div className="col-md-4" key={product._id}>

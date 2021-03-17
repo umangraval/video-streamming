@@ -29,9 +29,9 @@ export default class Qrcode extends Component {
                   className="QRCode"
                 />
       <p>
-        <button type="button" onClick={this.download}>
+        {/* <button type="button" onClick={this.download}>
           Download QR Code
-        </button>
+        </button> */}
       </p>
         </div>
         )
