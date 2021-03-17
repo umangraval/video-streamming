@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 // import Qrcode from "../components/Qrcode";
 import { Modal, Button } from "react-bootstrap";
-import QRCode from "qrcode.react";
 import "../assets/manage.css";
 
 export default class ProductView extends Component {
@@ -12,7 +11,7 @@ export default class ProductView extends Component {
       products: [],
       show: false,
       url: null,
-      pname: '',
+      pname: ""
     };
     // this.download = this.download.bind(this);
   }
@@ -30,15 +29,6 @@ export default class ProductView extends Component {
     }
   }
 
-  download = () => {
-    // console.log(this.props.pname);
-    const canvas = document.getElementsByClassName("QRCode");
-    canvas[0].toDataURL("image/jpeg");
-    const link = document.createElement("a");
-    link.download = `qrcode_${this.state.pname}`;
-    link.href = document.getElementsByClassName("QRCode")[0].toDataURL();
-    link.click();
-  }
   handleClose = () => this.setState({ ...this.state, show: false });
   handleShow = () => this.setState({ ...this.state, show: true });
 
@@ -46,30 +36,88 @@ export default class ProductView extends Component {
     const url = `${process.env.REACT_APP_CLIENT_URL}${this.state.url}`;
     return (
       <div>
-        <div className="wrapper container-fluid w-75 mt-5">
-          <div className="card shadow">
-                  <QRCode
-                  size={250}
-                  value={url}
-                  className="QRCode"
-                />
-            <div className="card-body">
-              <h5 className="card-title">Product Name</h5>
-              <div className="edit-btns">
-                <button type="button" className="btn btn-outline-success" onClick={this.download}>
-                  Download
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-outline-info"
-                  onClick={this.handleShow}
-                >
-                  View
-                </button>
+        <div className="container-fluid w-75 mt-5">
+          <div className="row p-4">
+            <h2>Product Name</h2>
+          </div>
+          <div className="row">
+            <div className="col listview">
+              <div className="shadow">
+                <ul class="list-group">
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    BathRoom
+                    <span class="badge badge-primary badge-pill">4</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Kitchen
+                    <span class="badge badge-primary badge-pill">2</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Living Room
+                    <span class="badge badge-primary badge-pill">1</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="col listview">
+              <div className="card mb-4 shadow">
+                <div className="row">
+                  <div className="col">
+                    <div className="card-body">
+                      <h5 className="card-title">Highlighter</h5>
+                      <p class="card-text">
+                        Some quick example text to build on the card title and
+                        make up the bulk of the card's content.
+                      </p>
+                    </div>
+                    <div className="edit-btns m-3">
+                      <button
+                        type="button"
+                        className="btn btn-outline-danger"
+                        onClick={this.handleShow}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col">
+                    <img
+                      src="https://jumanji.livspace-cdn.com/magazine/wp-content/uploads/sites/2/2020/07/16191441/Types-Of-Tiles-Ceramic.jpg"
+                      alt="img"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="card mb-4 shadow">
+                <div className="row">
+                  <div className="col">
+                    <div className="card-body">
+                      <h5 className="card-title">Flooring</h5>
+                      <p class="card-text">
+                        Some quick example text to build on the card title and
+                        make up the bulk of the card's content.
+                      </p>
+                    </div>
+                    <div className="edit-btns m-3">
+                      <button
+                        type="button"
+                        className="btn btn-outline-danger"
+                        onClick={this.handleShow}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col">
+                    <img
+                      src="https://www.supergres.com/images/stories/flexicontent/m_anteprima_brecce_bagno-riv-5.jpg"
+                      alt="img"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-
         </div>
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Body>Are you sure you want to delete?</Modal.Body>
