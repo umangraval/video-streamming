@@ -33,7 +33,7 @@ export default class Home extends Component {
             <Link to="/up">
               <button
                 type="button"
-                class="nounderline btn btn-outline-primary btn-lg btn-block dash-btn"
+                class="btn btn-outline-primary btn-lg btn-block dash-btn"
               >
                 Upload
               </button>
