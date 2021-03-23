@@ -6,14 +6,10 @@ import {
   Redirect
 } from "react-router-dom";
 import { BrowserView, MobileView } from "react-device-detect";
-// import { BrowserHistory } from 'react-router'
 import Home from "./pages/Home";
 import Player from "./pages/mobile/Player";
-import Upload from "./pages/Upload";
 import Product from "./pages/mobile/Product";
 import ProductView from "./pages/ProductView";
-import NewProduct from "./pages/NewProduct";
-import NewCategory from "./pages/NewCategory";
 import Scanner from "./pages/mobile/Scanner";
 import Login from "./pages/Login";
 import Medias from "./pages/mobile/Medias";
@@ -45,10 +41,6 @@ export default class App extends Component {
   updateUser(user) {
     this.setState({ user });
   }
-
-  // document.addEventListener('contextmenu', (event) => {
-  //   event.preventDefault();
-  // })
 
   render() {
     const { user } = this.state;

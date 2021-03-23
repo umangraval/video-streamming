@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
-// import Qrcode from "../components/Qrcode";
-import { Modal, Button } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
+import { Modal } from "react-bootstrap";
 import isEmpty from "../utils/isEmpty";
 import API from "../API";
 import "../assets/manage.css";
@@ -16,7 +15,6 @@ export default class ProductView extends Component {
       cmedias: [],
       deletemedia: null
     };
-    // this.onDelete = this.onDelete.bind(this);
   }
 
   async componentDidMount() {
@@ -28,16 +26,10 @@ export default class ProductView extends Component {
       );
       const data = await response.json();
       let group = data.reduce((r, a) => {
-        // console.log("a", a);
-        // console.log('r', r);
         r[a.categoryname] = [...(r[a.categoryname] || []), a];
         return r;
       }, {});
-      //  console.log(group);
       this.setState({ ...this.state, medias: group });
-      // Object.keys(this.state.medias).forEach( e => {
-      //   console.log(e);
-      // });
     } catch (error) {
       console.log(error);
     }
@@ -90,7 +82,7 @@ export default class ProductView extends Component {
       <div className="container-fluid w-75 mt-5">
         <button
           type="button"
-          class="btn btn-outline-info mb-3"
+          className="btn btn-outline-info mb-3"
           onClick={() => {
             this.props.history.goBack();
           }}
@@ -141,7 +133,7 @@ export default class ProductView extends Component {
                     <div className="col">
                       <div className="card-body">
                         <h5 className="card-title">{e.name}</h5>
-                        <p class="card-text">{e.description}</p>
+                        <p className="card-text">{e.description}</p>
                       </div>
                       <div className="edit-btns m-3">
                         <button
@@ -193,23 +185,6 @@ export default class ProductView extends Component {
             </button>
           </Modal.Footer>
         </Modal>
-        {/* <div className="row">
-            {this.state.products.map(product => (
-              <div className="col-md-4" key={product._id}>
-                <div className="card border-0">
-                  <Link to={`/product/${product._id}`}>
-                    <div className="card-body">
-                      <p>{product.name}</p>
-                    </div>
-                  </Link>
-                  <Qrcode
-                    url={`/product/${product._id}`}
-                    pname={product.name}
-                  />
-                </div>
-              </div>
-            ))}
-          </div> */}
       </div>
     );
   }

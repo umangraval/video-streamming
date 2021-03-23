@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
-// import Qrcode from "../components/Qrcode";
 import QRCode from "qrcode.react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import isEmpty from "../utils/isEmpty";
 import "../assets/manage.css";
 export default class Manage extends Component {
@@ -55,7 +54,7 @@ export default class Manage extends Component {
       <div className="container-fluid w-75 mt-5">
         <button
           type="button"
-          class="btn btn-outline-info mb-3"
+          className="btn btn-outline-info mb-3"
           onClick={() => {
             this.props.history.goBack();
           }}
@@ -65,7 +64,7 @@ export default class Manage extends Component {
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-arrow-left"
+            className="bi bi-arrow-left"
             viewBox="0 0 16 16"
           >
             <path
@@ -84,15 +83,6 @@ export default class Manage extends Component {
               <div className="card-body">
                 <h5 className="card-title">{product.name}</h5>
                 <div className="edit-btns">
-                  {/* <button
-                    type="button"
-                    className="btn btn-outline-success"
-                    onClick={() => {
-                      this.download(product.name);
-                    }}
-                  >
-                    Download
-                  </button> */}
                   <button
                     type="button"
                     className="btn btn-outline-secondary"
@@ -102,12 +92,14 @@ export default class Manage extends Component {
                   >
                     QRcode
                   </button>
-                  <Link to={{
-                    pathname: `/product/${product._id}`,
-                    state: {
-                      product
-                    }
-                    }}>
+                  <Link
+                    to={{
+                      pathname: `/product/${product._id}`,
+                      state: {
+                        product
+                      }
+                    }}
+                  >
                     <button type="button" className="btn btn-outline-info">
                       View
                     </button>
@@ -145,23 +137,6 @@ export default class Manage extends Component {
             </Modal.Footer>
           </Modal>
         </div>
-        {/* <div className="row">
-            {this.state.products.map(product => (
-              <div className="col-md-4" key={product._id}>
-                <div className="card border-0">
-                  <Link to={`/product/${product._id}`}>
-                    <div className="card-body">
-                      <p>{product.name}</p>
-                    </div>
-                  </Link>
-                  <Qrcode
-                    url={`/product/${product._id}`}
-                    pname={product.name}
-                  />
-                </div>
-              </div>
-            ))}
-          </div> */}
       </div>
     );
   }

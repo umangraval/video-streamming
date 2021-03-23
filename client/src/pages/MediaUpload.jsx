@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import isEmpty from "../utils/isEmpty";
 import API from "../API";
-import axios from "axios";
 export default class MediaUpload extends Component {
   constructor() {
     super();
@@ -33,7 +32,6 @@ export default class MediaUpload extends Component {
   }
 
   async componentDidMount() {
-    // console.log('upload', this.props.user);
     try {
       const presponse = await fetch(
         `${process.env.REACT_APP_BASE_URL}/product/products`
@@ -51,12 +49,10 @@ export default class MediaUpload extends Component {
   }
 
   onChange(e) {
-    // this.setState({ name: e.target.value });
     this.setState({ [e.target.name]: e.target.value });
   }
 
   async handleSelectChange(e) {
-    // console.log({ [e.name]: e.value });
     this.setState({ [e.name]: e.value });
     console.log({ [e.name]: e.value });
   }
@@ -95,8 +91,6 @@ export default class MediaUpload extends Component {
           success: false
         });
       }, 2000);
-
-      // this.props.history.push('/');
     } catch (error) {
       this.setState({ ...this.state, success: false });
       console.log(error);
@@ -137,8 +131,6 @@ export default class MediaUpload extends Component {
           success: false
         });
       }, 2000);
-
-      // this.props.history.push('/');
     } catch (error) {
       this.setState({ ...this.state, success: false });
       console.log(error);
@@ -148,7 +140,6 @@ export default class MediaUpload extends Component {
   async onSubmit(e) {
     try {
       e.preventDefault();
-      // console.log(this.state.file);
 
       if (!this.state.name) {
         this.setState({ ...this.state, uerr: "Media Name Needed" });
@@ -227,8 +218,6 @@ export default class MediaUpload extends Component {
           success: false
         });
       }, 2000);
-
-      // this.props.history.push('/');
     } catch (error) {
       this.setState({ success: false });
       console.log(error);
@@ -285,7 +274,7 @@ export default class MediaUpload extends Component {
         <div className="container dash p-5">
           <button
             type="button"
-            class="btn btn-outline-info mb-3"
+            className="btn btn-outline-info mb-3"
             onClick={() => {
               this.props.history.goBack();
             }}
@@ -295,7 +284,7 @@ export default class MediaUpload extends Component {
               width="16"
               height="16"
               fill="currentColor"
-              class="bi bi-arrow-left"
+              className="bi bi-arrow-left"
               viewBox="0 0 16 16"
             >
               <path
@@ -306,7 +295,7 @@ export default class MediaUpload extends Component {
             Back
           </button>
           {success ? (
-            <div class="alert alert-success" role="alert">
+            <div className="alert alert-success" role="alert">
               Success
             </div>
           ) : (
@@ -319,7 +308,7 @@ export default class MediaUpload extends Component {
                 <div className="card-body">
                   <form onSubmit={this.onProductSubmit}>
                     <div className="form-group">
-                      <label for="exampleInputEmail1">New Product</label>
+                      <label>New Product</label>
                       <input
                         type="text"
                         className="form-control"
@@ -334,7 +323,7 @@ export default class MediaUpload extends Component {
                     </button>
                   </form>
                   {perr ? (
-                    <div class="alert alert-danger mt-2" role="alert">
+                    <div className="alert alert-danger mt-2" role="alert">
                       {perr}
                     </div>
                   ) : (
@@ -348,7 +337,7 @@ export default class MediaUpload extends Component {
                 <div className="card-body">
                   <form onSubmit={this.onCategorySubmit}>
                     <div className="form-group">
-                      <label for="exampleInputEmail1">New Category</label>
+                      <label>New Category</label>
                       <input
                         type="text"
                         className="form-control"
@@ -363,7 +352,7 @@ export default class MediaUpload extends Component {
                     </button>
                   </form>
                   {cerr ? (
-                    <div class="alert alert-danger mt-2" role="alert">
+                    <div className="alert alert-danger mt-2" role="alert">
                       {cerr}
                     </div>
                   ) : (
@@ -381,7 +370,7 @@ export default class MediaUpload extends Component {
                     <div className="form-row">
                       <div className="col">
                         <div className="form-group">
-                          <label for="exampleInputEmail1">Media Name</label>
+                          <label>Media Name</label>
                           <input
                             type="text"
                             className="form-control"
@@ -394,9 +383,7 @@ export default class MediaUpload extends Component {
                       </div>
                       <div className="col">
                         <div className="form-group">
-                          <label for="exampleFormControlFile1">
-                            Upload Media
-                          </label>
+                          <label>Upload Media</label>
                           <input
                             className="form-control-file"
                             type="file"
@@ -409,9 +396,7 @@ export default class MediaUpload extends Component {
                     <div className="form-row">
                       <div className="col">
                         <div className="form-group">
-                          <label for="exampleFormControlSelect2">
-                            Select Product
-                          </label>
+                          <label>Select Product</label>
                           {/* <select
                             className="form-control"
                             id="exampleFormControlSelect2"
@@ -486,7 +471,7 @@ export default class MediaUpload extends Component {
                     </button>
                   </form>
                   {uerr ? (
-                    <div class="alert alert-danger mt-2" role="alert">
+                    <div className="alert alert-danger mt-2" role="alert">
                       {uerr}
                     </div>
                   ) : (

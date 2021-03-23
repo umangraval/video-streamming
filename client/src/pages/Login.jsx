@@ -46,15 +46,15 @@ export default class Login extends Component {
     return (
       <div>
         <div className="d-flex justify-content-center align-items-center dash p-3">
-          <div class="card shadow p-3 mb-5 bg-white rounded">
-            <div class="card-body">
+          <div className="card shadow p-3 mb-5 bg-white rounded">
+            <div className="card-body">
               <form onSubmit={this.handleSubmit}>
-                <div class="form-group">
+                <div className="form-group">
                   <label for="exampleInputEmail1">Email address</label>
                   <input
                     type="text"
                     name="username"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Username"
                     value={this.state.username}
                     onChange={this.handleChange}
@@ -64,20 +64,20 @@ export default class Login extends Component {
                   <label for="exampleInputPassword1">Password</label>
                   <input
                     type="password"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Password"
                     name="password"
                     value={this.state.password}
                     onChange={this.handleChange}
                   />
                 </div>
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" className="btn btn-primary">
                   Login
                 </button>
               </form>
 
               {error ? (
-                <div class="alert alert-danger mt-2" role="alert">
+                <div className="alert alert-danger mt-2" role="alert">
                   {error}
                 </div>
               ) : (

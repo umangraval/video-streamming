@@ -28,27 +28,21 @@ class Player extends Component {
         <div className="container-fluid mt-3">
           <div className="card border-0">
             {type === "video" ? (
-            <video controls autoPlay controlsList="nodownload">
-              <source
-                src={`${process.env.REACT_APP_BASE_URL}/media/video/${this.state.details.filename}`}
-                type="video/mp4"
-              ></source>
-            </video> ) : (
-              <img
-              src={base_url + details.poster}
-              alt="img"
-            />
-            ) }
-            {/* <img
-              src="https://jumanji.livspace-cdn.com/magazine/wp-content/uploads/sites/2/2020/07/16191441/Types-Of-Tiles-Ceramic.jpg"
-              alt="img"
-            /> */}
-            <div class="card-body">
-              <h5 class="card-title">{details.name}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">
+              <video controls autoPlay controlsList="nodownload">
+                <source
+                  src={`${process.env.REACT_APP_BASE_URL}/media/video/${this.state.details.filename}`}
+                  type="video/mp4"
+                ></source>
+              </video>
+            ) : (
+              <img src={base_url + details.poster} alt="img" />
+            )}
+            <div className="card-body">
+              <h5 className="card-title">{details.name}</h5>
+              <h6 className="card-subtitle mb-2 text-muted">
                 {details.categoryname}
               </h6>
-              <p class="card-text">{details.description}</p>
+              <p className="card-text">{details.description}</p>
             </div>
           </div>
         </div>
@@ -64,15 +58,6 @@ class Player extends Component {
           </button>
         </footer>
       </div>
-      // <div>
-      //     <header className="container">
-      //         <video controls autoPlay controlsList="nodownload" >
-      //             <source src={`${process.env.REACT_APP_BASE_URL}/media/video/${this.state.videoId}`} type="video/mp4"></source>
-      //         </video>
-      //         <h1>{ this.state.videoData.name }</h1>
-      //         <button  onClick={() => { this.props.history.goBack() }}>Back</button>
-      //     </header>
-      // </div>
     );
   }
 }
