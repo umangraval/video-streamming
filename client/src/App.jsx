@@ -1,5 +1,10 @@
 import React, { Component, Suspense } from "react";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  Redirect
+} from "react-router-dom";
 import { BrowserView, MobileView } from "react-device-detect";
 // import { BrowserHistory } from 'react-router'
 import Home from "./pages/Home";
@@ -49,68 +54,63 @@ export default class App extends Component {
     const { user } = this.state;
     return (
       <>
-          <Router>
+        <Router>
           <BrowserView>
-          <Navbar 
-            user={user}
-            updateUser={this.updateUser}
-          />
-          <Switch>
-          <Route
-          exact
-          path="/login"
-          render={(props) => (
-            <Login
-              {...props}
-              user={user}
-              updateUser={this.updateUser}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/dashboard"
-          render={(props) => (
-            <Home
-              {...props}
-              user={user}
-              updateUser={this.updateUser}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/up"
-          render={(props) => (
-            <MediaUpload
-              {...props}
-              user={user}
-              updateUser={this.updateUser}
-            />
-          )}
-        />
-        {/* <Route path="/dashboard" component={Home}></Route> */}
-        <Route path="/manage" component={Manage}></Route>
-        {/* <Route path="/up" component={MediaUpload}></Route> */}
-        
-          
-        <Route
-          exact
-          path="/upload"
-          render={(props) => (
-            <Upload
-              {...props}
-              user={user}
-              updateUser={this.updateUser}
-              setError={this.setError}
-            />
-          )}
-        />
+            <Navbar user={user} updateUser={this.updateUser} />
+            <Switch>
+              <Route exact path="/">
+                {user ? (
+                  <Redirect to="/dashboard" />
+                ) : (
+                  <Redirect to="/login" />
+                )}
+              </Route>
+              <Route
+                exact
+                path="/login"
+                render={props => (
+                  <Login {...props} user={user} updateUser={this.updateUser} />
+                )}
+              />
+              <Route
+                exact
+                path="/dashboard"
+                render={props => (
+                  <Home {...props} user={user} updateUser={this.updateUser} />
+                )}
+              />
+              <Route
+                exact
+                path="/up"
+                render={props => (
+                  <MediaUpload
+                    {...props}
+                    user={user}
+                    updateUser={this.updateUser}
+                  />
+                )}
+              />
+              {/* <Route path="/dashboard" component={Home}></Route> */}
+              <Route path="/manage" component={Manage}></Route>
+              {/* <Route path="/up" component={MediaUpload}></Route> */}
+
+              <Route
+                exact
+                path="/upload"
+                render={props => (
+                  <Upload
+                    {...props}
+                    user={user}
+                    updateUser={this.updateUser}
+                    setError={this.setError}
+                  />
+                )}
+              />
               <Route path="/newproduct" component={NewProduct}></Route>
               <Route path="/newcategory" component={NewCategory}></Route>
               <Route path="/player/:id" component={Player}></Route>
               <Route path="/product/:id" component={ProductView}></Route>
-              </Switch>
+            </Switch>
           </BrowserView>
           <MobileView>
             <Suspense fallback={<div>Loading...</div>}></Suspense>
@@ -122,7 +122,7 @@ export default class App extends Component {
               <Route path="/product/:id" component={Product}></Route>
             </Switch>
           </MobileView>
-          </Router>
+        </Router>
       </>
     );
   }
