@@ -10,76 +10,47 @@ export default class Medias extends Component {
   constructor() {
     super();
     this.state = {
-      videos: []
+      medias: [],
+      cname: null,
     };
   }
   async componentDidMount() {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/media/videos/${this.props.match.params.id}`
-      );
-      const data = await response.json();
-      console.log(data);
-      this.setState({ videos: [...data] });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async onDelete(e) {
-    try {
-      await API.delete(
-        `${process.env.REACT_APP_BASE_URL}/media/delete/${e._id}`
-      );
-      this.setState({
-        ...this.state,
-        videos: this.state.videos.filter(function(video) {
-          return video._id !== e._id;
-        })
-      });
+      this.setState({ medias: this.props.location.state.media, cname: this.props.location.state.cname })
     } catch (error) {
       console.log(error);
     }
   }
 
   render() {
+    const { medias, cname } = this.state;
+    const base_url = `${process.env.REACT_APP_BASE_URL}`;
     return (
       <div>
         <nav className="navbar sticky-top navbar-light bg-light one-edge-shadow">
-          <span className="navbar-brand">BathRoom</span>
+          <span className="navbar-brand">{cname}</span>
         </nav>
-
+        
         <div className="category-list">
+        {medias.map(e => (
           <div className="card mb-2">
             <div className="row">
               <div className="col">
                 <div className="card-body">
-                  <h5 className="card-title">Highlighter</h5>
+                  <h5 className="card-title">{e.name}</h5>
                 </div>
               </div>
               <div className="col">
                 <img
-                  src="https://jumanji.livspace-cdn.com/magazine/wp-content/uploads/sites/2/2020/07/16191441/Types-Of-Tiles-Ceramic.jpg"
+                  src={base_url + e.poster}
+                  width="100%"
+                  height="100%"
                   alt="img"
                 />
               </div>
             </div>
           </div>
-          <div className="card mb-2">
-          <div className="row">
-              <div className="col">
-                <div className="card-body">
-                  <h5 className="card-title">Flooring</h5>
-                </div>
-              </div>
-              <div className="col">
-                <img
-                  src="https://www.supergres.com/images/stories/flexicontent/m_anteprima_brecce_bagno-riv-5.jpg"
-                  alt="img"
-                />
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* <div className="row">

@@ -28,6 +28,15 @@ app.get("/products", async function(req, res) {
   }
 });
 
+// endpoint to fetch all products metadata
+app.get("/:id", async function(req, res) {
+  try {
+    const product = await Product.findById(req.params.id);
+    res.json(product);
+  } catch (e) {
+    console.log("Error", e);
+  }
+});
 // app.delete("/delete/:id", notLoggedInValidator, async function(req, res) {
 //   try {
 //     const { id } = req.params;

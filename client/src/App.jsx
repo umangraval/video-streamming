@@ -109,11 +109,11 @@ export default class App extends Component {
           <MobileView>
             <Suspense fallback={<div>Loading...</div>}></Suspense>
             <Switch>
-              {/* <Route exact path="/" component={Home}></Route> */}
-              <Route path="/scanner" component={Scanner}></Route>
-              <Route path="/player/:id" component={Player}></Route>
-              <Route path="/media/:id" component={Medias}></Route>
-              <Route path="/product/:id" component={Product}></Route>
+              {/* <Redirect from="/*" to="/scanner" /> */}
+              <Route exact path="/scanner" component={Scanner}></Route>
+              <Route exact path="/player/:id" component={Player}></Route>
+              <Route exact path="/media/:id" component={Medias}></Route>
+              <Route exact path="/product/:id" component={Product}></Route>
             </Switch>
           </MobileView>
         </Router>

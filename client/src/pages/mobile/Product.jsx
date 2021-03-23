@@ -5,64 +5,62 @@ import API from "../../API";
 import "../../assets/footer.css";
 import "../../assets/category.css";
 
-
 export default class Product extends Component {
   constructor() {
     super();
     this.state = {
-      medias: []
+      medias: [],
+      pname: null,
+      pid: null,
     };
   }
   async componentDidMount() {
     try {
+      const { id } = this.props.match.params;
+      const res = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/product/${id}`
+      );
+      const product = await res.json();
       const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/media/videos/${this.props.match.params.id}`
+        `${process.env.REACT_APP_BASE_URL}/media/medias/${id}`
       );
       const data = await response.json();
       console.log(data);
-      this.setState({ medias: [...data] });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async onDelete(e) {
-    try {
-      await API.delete(
-        `${process.env.REACT_APP_BASE_URL}/media/delete/${e._id}`
-      );
-      this.setState({
-        ...this.state,
-        videos: this.state.videos.filter(function(video) {
-          return video._id !== e._id;
-        })
-      });
+      let group = data.reduce((r, a) => {
+        r[a.categoryname] = [...(r[a.categoryname] || []), a];
+        return r;
+      }, {});
+      console.log(group);
+      this.setState({ ...this.state, pid: id, pname: product.name, medias: group });
     } catch (error) {
       console.log(error);
     }
   }
 
   render() {
+    const { pname, medias, pid } = this.state;
     return (
       <div>
-        <nav class="navbar sticky-top navbar-light bg-light one-edge-shadow">
-  <span class="navbar-brand">Kajaria</span>
-</nav>
+        <nav className="navbar sticky-top navbar-light bg-light one-edge-shadow">
+          <span class="navbar-brand">{pname}</span>
+        </nav>
         <div className="category-list">
           <ul class="list-group">
+          {Object.keys(medias).map(e => (
+            <Link to={{
+              pathname: `/media/${pid}`,
+              state: {
+                media: medias[e],
+                cname: e
+              }
+              }}>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              BathRoom
-              <span class="badge badge-primary badge-pill">4</span>
+              {e}
+              <span class="badge badge-primary badge-pill">{medias[e].length}</span>
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Kitchen
-              <span class="badge badge-primary badge-pill">2</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Living Room
-              <span class="badge badge-primary badge-pill">1</span>
-            </li>
-          </ul>
+            </Link>
+            ))}
+            </ul>
         </div>
 
         {/* <div className="row">
