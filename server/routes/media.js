@@ -4,8 +4,8 @@ const thumbsupply = require("thumbsupply");
 const multer = require("multer");
 const { Media } = require("../model/Media");
 const notLoggedInValidator = require("../validation/notLoggedInValidator");
-const path = require('path')
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 const app = express();
 
 var storage = multer.diskStorage({
@@ -29,32 +29,33 @@ app.post("/upload", notLoggedInValidator, upload.single("file"), async function(
   res
 ) {
   try {
-    const { name, productId, categoryname } = req.body;
+    const { name, productId, categoryname, description } = req.body;
     const { filename } = req.file;
-    const extimg = ['jpg', 'jpeg', 'png'];
-    const extvideo = ['mp4'];
-    if(extimg.includes(filename.split(".")[1])) {
+    const extimg = ["jpg", "jpeg", "png"];
+    const extvideo = ["mp4"];
+    if (extimg.includes(filename.split(".")[1])) {
       const newImage = new Media();
       newImage.name = name;
-    newImage.productId = productId;
-    newImage.categoryname = categoryname;
-    newImage.filename = filename;
-    // newImage.poster = `/media/video/${filename.split(".")[0]}/poster`;
-    const data = await newImage.save();
-    return res.json(data);
+      newImage.productId = productId;
+      newImage.categoryname = categoryname;
+      newImage.filename = filename;
+      newImage.poster = `/media/image/${filename}/poster`;
+      newImage.description = description;
+      const data = await newImage.save();
+      return res.json(data);
     } else if (extvideo.includes(filename.split(".")[1])) {
       const newVideo = new Media();
-    newVideo.name = name;
-    newVideo.productId = productId;
-    newVideo.categoryname = categoryname;
-    newVideo.filename = filename;
-    newVideo.poster = `/media/video/${filename.split(".")[0]}/poster`;
-    const data = await newVideo.save();
-    return res.json(data);
+      newVideo.name = name;
+      newVideo.productId = productId;
+      newVideo.categoryname = categoryname;
+      newVideo.filename = filename;
+      newVideo.poster = `/media/video/${filename}/poster`;
+      newVideo.description = description;
+      const data = await newVideo.save();
+      return res.json(data);
     } else {
-      return res.json("Format not supported");
+      return res.json("Format not supported. Only mp4, jpg");
     }
-    
   } catch (e) {
     console.log("Error", e);
   }
@@ -73,9 +74,13 @@ app.get("/medias/:productId", async function(req, res) {
 
 app.get("/video/:name/poster", function(req, res) {
   thumbsupply
-    .generateThumbnail(process.env.STORAGE + `/${req.params.name}.mp4`)
+    .generateThumbnail(process.env.STORAGE + `/${req.params.name}`)
     .then(thumb => res.sendFile(thumb))
     .catch(err => console.log(err));
+});
+
+app.get("/image/:name/poster", function(req, res) {
+  res.sendFile(process.env.STORAGE + `/${req.params.name}`);
 });
 
 // endpoint to fetch a single video's metadata

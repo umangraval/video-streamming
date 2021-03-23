@@ -78,10 +78,20 @@ export default class App extends Component {
             />
           )}
         />
-
+        <Route
+          exact
+          path="/up"
+          render={(props) => (
+            <MediaUpload
+              {...props}
+              user={user}
+              updateUser={this.updateUser}
+            />
+          )}
+        />
         {/* <Route path="/dashboard" component={Home}></Route> */}
         <Route path="/manage" component={Manage}></Route>
-        <Route path="/up" component={MediaUpload}></Route>
+        {/* <Route path="/up" component={MediaUpload}></Route> */}
         
           
         <Route

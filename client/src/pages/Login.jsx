@@ -21,7 +21,7 @@ export default class Login extends Component {
       const currentUser = await getCurrentUser();
       this.props.updateUser(currentUser);
       if (!isEmpty(currentUser)) this.props.history.push("/dashboard");
-    } else this.props.history.push("/login");
+    } else this.props.history.push("/dashboard");
   }
 
 

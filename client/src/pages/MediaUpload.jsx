@@ -12,14 +12,23 @@ export default class MediaUpload extends Component {
       progress: null,
       productId: null,
       categoryname: null,
+      description: "",
       products: [],
       categories: [],
       file: {},
-      msg: null
+      msg: null,
+      cerr: null,
+      perr: null,
+      uerr: null,
+      cname: "",
+      pname: "",
+      success: false
     };
     this.onChange = this.onChange.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onProductSubmit = this.onProductSubmit.bind(this);
+    this.onCategorySubmit = this.onCategorySubmit.bind(this);
     this.fileUpdateHandler = this.fileUpdateHandler.bind(this);
   }
 
@@ -52,32 +61,145 @@ export default class MediaUpload extends Component {
     console.log({ [e.name]: e.value });
   }
 
-  async logout() {
-    await API.post(`/auth/logout`)
-      .then(res => {
-        if (res.status === 200) {
-          this.props.updateUser(undefined);
+  async onCategorySubmit(e) {
+    try {
+      e.preventDefault();
+      if (!this.state.cname) {
+        this.setState({ ...this.state, cerr: "Category Name Needed" });
+
+        setTimeout(() => {
+          this.setState({
+            ...this.state,
+            cerr: null
+          });
+        }, 2000);
+
+        return;
+      }
+      const data = await API.post(
+        `${process.env.REACT_APP_BASE_URL}/category/`,
+        {
+          name: this.state.cname
         }
-      })
-      .catch(error => {
-        console.log("Logout error", error);
+      );
+      this.setState({
+        ...this.state,
+        cname: "",
+        success: true,
+        categories: [...this.state.categories, data.data]
       });
+
+      setTimeout(() => {
+        this.setState({
+          ...this.state,
+          success: false
+        });
+      }, 2000);
+
+      // this.props.history.push('/');
+    } catch (error) {
+      this.setState({ ...this.state, success: false });
+      console.log(error);
+    }
+  }
+
+  async onProductSubmit(e) {
+    try {
+      e.preventDefault();
+      if (!this.state.pname) {
+        this.setState({ ...this.state, perr: "Product Name Needed" });
+
+        setTimeout(() => {
+          this.setState({
+            ...this.state,
+            cerr: null
+          });
+        }, 2000);
+
+        return;
+      }
+      const data = await API.post(
+        `${process.env.REACT_APP_BASE_URL}/product/`,
+        {
+          name: this.state.pname
+        }
+      );
+      this.setState({
+        ...this.state,
+        pname: "",
+        success: true,
+        products: [...this.state.products, data.data]
+      });
+
+      setTimeout(() => {
+        this.setState({
+          ...this.state,
+          success: false
+        });
+      }, 2000);
+
+      // this.props.history.push('/');
+    } catch (error) {
+      this.setState({ ...this.state, success: false });
+      console.log(error);
+    }
   }
 
   async onSubmit(e) {
     try {
       e.preventDefault();
       // console.log(this.state.file);
-      if (!this.state.productId) {
-        this.setState({ ...this.state, msg: "Product Needed" });
+
+      if (!this.state.name) {
+        this.setState({ ...this.state, uerr: "Media Name Needed" });
+
+        setTimeout(() => {
+          this.setState({
+            ...this.state,
+            uerr: null
+          });
+        }, 2000);
         return;
       }
-      console.log(this.state);
-      if (!this.state.file.name) return;
+      if (!this.state.productId) {
+        this.setState({ ...this.state, uerr: "Product Needed" });
+
+        setTimeout(() => {
+          this.setState({
+            ...this.state,
+            uerr: null
+          });
+        }, 2000);
+        return;
+      }
+      if (!this.state.categoryname) {
+        this.setState({ ...this.state, uerr: "Category Needed" });
+
+        setTimeout(() => {
+          this.setState({
+            ...this.state,
+            uerr: null
+          });
+        }, 2000);
+        return;
+      }
+      if (!this.state.file.name) {
+        this.setState({ ...this.state, uerr: "Media File Needed" });
+
+        setTimeout(() => {
+          this.setState({
+            ...this.state,
+            uerr: null
+          });
+        }, 2000);
+        return;
+      }
+
       const fileData = new FormData();
       fileData.append("name", this.state.name);
       fileData.append("productId", this.state.productId);
       fileData.append("categoryname", this.state.categoryname);
+      fileData.append("description", this.state.description);
       fileData.append("file", this.state.file);
       const { data } = await API.post(
         `${process.env.REACT_APP_BASE_URL}/media/upload`,
@@ -95,9 +217,17 @@ export default class MediaUpload extends Component {
         file: {},
         productId: null,
         categoryname: null,
-        progress: null,
-        msg: "Success"
+        description: "",
+        success: true
       });
+
+      setTimeout(() => {
+        this.setState({
+          ...this.state,
+          success: false
+        });
+      }, 2000);
+
       // this.props.history.push('/');
     } catch (error) {
       this.setState({ success: false });
@@ -132,49 +262,99 @@ export default class MediaUpload extends Component {
   }
 
   render() {
-    // const { user } = this.props;
-    // if (isEmpty(user)) {
-    //   return <Redirect to="/login" />;
-    // }
+    const { user } = this.props;
+    if (isEmpty(user)) {
+      return <Redirect to="/login" />;
+    }
 
-    const { name, file, msg, products, categories } = this.state;
+    const {
+      success,
+      name,
+      cerr,
+      cname,
+      pname,
+      perr,
+      uerr,
+      products,
+      categories,
+      description
+    } = this.state;
 
     return (
       <div>
         <div className="container dash p-5">
+          <button
+            type="button"
+            class="btn btn-outline-info mb-3"
+            onClick={() => {
+              this.props.history.goBack();
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-arrow-left"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+              />
+            </svg>{" "}
+            Back
+          </button>
+          {success ? (
+            <div class="alert alert-success" role="alert">
+              Success
+            </div>
+          ) : (
+            <div></div>
+          )}
+
           <div className="row">
             <div className="col">
               <div className="card shadow p-3 mb-5 bg-white rounded">
                 <div className="card-body">
-                  <form action="/dashboard">
+                  <form onSubmit={this.onProductSubmit}>
                     <div className="form-group">
                       <label for="exampleInputEmail1">New Product</label>
                       <input
-                        type="email"
+                        type="text"
                         className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
                         placeholder="Enter New Product Name"
+                        value={pname}
+                        name="pname"
+                        onChange={this.onChange}
                       />
                     </div>
                     <button type="submit" className="btn btn-primary">
                       Submit
                     </button>
                   </form>
+                  {perr ? (
+                    <div class="alert alert-danger mt-2" role="alert">
+                      {perr}
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
                 </div>
               </div>
             </div>
             <div className="col">
               <div className="card shadow p-3 mb-5 bg-white rounded">
                 <div className="card-body">
-                  <form action="/dashboard">
+                  <form onSubmit={this.onCategorySubmit}>
                     <div className="form-group">
                       <label for="exampleInputEmail1">New Category</label>
                       <input
-                        type="email"
+                        type="text"
                         className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
+                        value={cname}
+                        name="cname"
+                        onChange={this.onChange}
                         placeholder="Enter New Category Name"
                       />
                     </div>
@@ -182,6 +362,13 @@ export default class MediaUpload extends Component {
                       Submit
                     </button>
                   </form>
+                  {cerr ? (
+                    <div class="alert alert-danger mt-2" role="alert">
+                      {cerr}
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
                 </div>
               </div>
             </div>
@@ -190,17 +377,18 @@ export default class MediaUpload extends Component {
             <div className="col">
               <div className="card shadow p-3 mb-5 bg-white rounded">
                 <div className="card-body">
-                  <form action="/dashboard">
+                  <form onSubmit={this.onSubmit}>
                     <div className="form-row">
                       <div className="col">
                         <div className="form-group">
                           <label for="exampleInputEmail1">Media Name</label>
                           <input
-                            type="email"
+                            type="text"
                             className="form-control"
-                            id="exampleInputEmail1"
-                            aria-describedby="emailHelp"
                             placeholder="Enter Media Name"
+                            value={name}
+                            name="name"
+                            onChange={this.onChange}
                           />
                         </div>
                       </div>
@@ -210,9 +398,10 @@ export default class MediaUpload extends Component {
                             Upload Media
                           </label>
                           <input
-                            type="file"
                             className="form-control-file"
-                            id="exampleFormControlFile1"
+                            type="file"
+                            id="filefield"
+                            onChange={this.fileUpdateHandler}
                           />
                         </div>
                       </div>
@@ -223,7 +412,7 @@ export default class MediaUpload extends Component {
                           <label for="exampleFormControlSelect2">
                             Select Product
                           </label>
-                          <select
+                          {/* <select
                             className="form-control"
                             id="exampleFormControlSelect2"
                           >
@@ -232,7 +421,19 @@ export default class MediaUpload extends Component {
                             <option>3</option>
                             <option>4</option>
                             <option>5</option>
-                          </select>
+                          </select> */}
+                          <Select
+                            options={products.map(p => {
+                              return {
+                                label: p.name,
+                                value: p._id,
+                                name: "productId"
+                              };
+                            })}
+                            defaultValue={{ label: "Select Product", value: 0 }}
+                            name="productId"
+                            onChange={this.handleSelectChange}
+                          />
                         </div>
                       </div>
                       <div className="col">
@@ -240,7 +441,7 @@ export default class MediaUpload extends Component {
                           <label for="exampleFormControlSelect2">
                             Select Category
                           </label>
-                          <select
+                          {/* <select
                             className="form-control"
                             id="exampleFormControlSelect2"
                           >
@@ -249,7 +450,22 @@ export default class MediaUpload extends Component {
                             <option>3</option>
                             <option>4</option>
                             <option>5</option>
-                          </select>
+                          </select> */}
+                          <Select
+                            options={categories.map(c => {
+                              return {
+                                label: c.name,
+                                value: c.name,
+                                name: "categoryname"
+                              };
+                            })}
+                            defaultValue={{
+                              label: "Select Category",
+                              value: 0
+                            }}
+                            name="categoryname"
+                            onChange={this.handleSelectChange}
+                          />
                         </div>
                       </div>
                     </div>
@@ -259,14 +475,23 @@ export default class MediaUpload extends Component {
                       </label>
                       <textarea
                         className="form-control"
-                        id="exampleFormControlTextarea1"
                         rows="3"
+                        value={description}
+                        name="description"
+                        onChange={this.onChange}
                       ></textarea>
                     </div>
                     <button type="submit" className="btn btn-primary">
                       Upload
                     </button>
                   </form>
+                  {uerr ? (
+                    <div class="alert alert-danger mt-2" role="alert">
+                      {uerr}
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
                 </div>
               </div>
             </div>
