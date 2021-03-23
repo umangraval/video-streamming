@@ -33,6 +33,12 @@ export default class Medias extends Component {
         
         <div className="category-list">
         {medias.map(e => (
+          <Link to={{
+            pathname: `/player/${e._id}`,
+            state: {
+              details: e
+            }
+            }}>
           <div className="card mb-2">
             <div className="row">
               <div className="col">
@@ -50,6 +56,7 @@ export default class Medias extends Component {
               </div>
             </div>
           </div>
+          </Link>
           ))}
         </div>
 

@@ -96,7 +96,7 @@ app.get("/video/:id/data", async function(req, res) {
 
 app.get("/video/:id", function(req, res) {
   try {
-    const path = process.env.STORAGE + `/${req.params.id}.mp4`;
+    const path = process.env.STORAGE + `/${req.params.id}`;
     const stat = fs.statSync(path);
     const fileSize = stat.size;
     const range = req.headers.range;
