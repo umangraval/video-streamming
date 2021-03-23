@@ -1,6 +1,17 @@
 import React, { Component } from "react";
+import isEmpty from "../utils/isEmpty";
+import API from '../API'; 
 
 export default class Navbar extends Component {
+  async logout() {
+    await API.post(`/auth/logout`).then((res) => {
+      if (res.status === 200) {
+        this.props.updateUser(undefined);
+      }
+    }).catch((error) => {
+      console.log('Logout error', error);
+    });
+  };
   render() {
     return (
       <div>
@@ -11,9 +22,12 @@ export default class Navbar extends Component {
             </div>
             <ul className="nav navbar-nav navbar-right">
               <li>
-                <a className="nav-link" href="/login">
+                {isEmpty(this.props.user) ? (<a className="nav-link" href="/login">
                   Login
-                </a>
+                </a>) : (<a className="nav-link" href="/login" onClick={() => {this.logout()}}>
+                  Logout
+                </a>)}
+                
               </li>
             </ul>
           </div>

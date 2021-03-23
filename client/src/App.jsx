@@ -51,36 +51,38 @@ export default class App extends Component {
       <>
           <Router>
           <BrowserView>
-          <Navbar />
+          <Navbar 
+            user={user}
+            updateUser={this.updateUser}
+          />
           <Switch>
-        {/* <Route
-          exact
-          path="/"
-          render={(props) => (
-            <Login
-              {...props}
-              user={user}
-              setError={this.setError}
-              updateUser={this.updateUser}
-            />
-          )}
-        /> */}
-
-        <Route path="/dashboard" component={Home}></Route>
-        <Route path="/manage" component={Manage}></Route>
-        <Route path="/up" component={MediaUpload}></Route>
-        <Route
+          <Route
           exact
           path="/login"
           render={(props) => (
             <Login
               {...props}
               user={user}
-              setError={this.setError}
               updateUser={this.updateUser}
             />
           )}
         />
+        <Route
+          exact
+          path="/dashboard"
+          render={(props) => (
+            <Home
+              {...props}
+              user={user}
+              updateUser={this.updateUser}
+            />
+          )}
+        />
+
+        {/* <Route path="/dashboard" component={Home}></Route> */}
+        <Route path="/manage" component={Manage}></Route>
+        <Route path="/up" component={MediaUpload}></Route>
+        
           
         <Route
           exact
@@ -103,7 +105,7 @@ export default class App extends Component {
           <MobileView>
             <Suspense fallback={<div>Loading...</div>}></Suspense>
             <Switch>
-              <Route exact path="/" component={Home}></Route>
+              {/* <Route exact path="/" component={Home}></Route> */}
               <Route path="/scanner" component={Scanner}></Route>
               <Route path="/player/:id" component={Player}></Route>
               <Route path="/media/:id" component={Medias}></Route>

@@ -10,7 +10,7 @@ export default class Product extends Component {
   constructor() {
     super();
     this.state = {
-      videos: []
+      medias: []
     };
   }
   async componentDidMount() {
@@ -20,7 +20,7 @@ export default class Product extends Component {
       );
       const data = await response.json();
       console.log(data);
-      this.setState({ videos: [...data] });
+      this.setState({ medias: [...data] });
     } catch (error) {
       console.log(error);
     }
