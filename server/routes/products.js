@@ -1,7 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 const { Product } = require("../model/Product");
-const { Video } = require("../model/Video");
+const { Media } = require("../model/Media");
 const notLoggedInValidator = require("../validation/notLoggedInValidator");
 
 const app = express();
@@ -28,28 +28,37 @@ app.get("/products", async function(req, res) {
   }
 });
 
-app.delete("/delete/:id", notLoggedInValidator, async function(req, res) {
+// endpoint to fetch all products metadata
+app.get("/:id", async function(req, res) {
   try {
-    const { id } = req.params;
-    const product = await Product.findById(id);
-    console.log(product);
-    const media = await Video.find({ productId: product._id });
-    media.forEach(e => {
-      const path = process.env.STORAGE + `/${e.filename}.mp4`;
-      fs.unlink(path, err => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        //file removed
-      });
-    });
-    await Product.findByIdAndDelete(id);
-    await Video.deleteMany({ productId: product._id });
-    res.json("deleted");
+    const product = await Product.findById(req.params.id);
+    res.json(product);
   } catch (e) {
     console.log("Error", e);
   }
 });
+// app.delete("/delete/:id", notLoggedInValidator, async function(req, res) {
+//   try {
+//     const { id } = req.params;
+//     const product = await Product.findById(id);
+//     console.log(product);
+//     const media = await Video.find({ productId: product._id });
+//     media.forEach(e => {
+//       const path = process.env.STORAGE + `/${e.filename}.mp4`;
+//       fs.unlink(path, err => {
+//         if (err) {
+//           console.error(err);
+//           return;
+//         }
+//         //file removed
+//       });
+//     });
+//     await Product.findByIdAndDelete(id);
+//     await Video.deleteMany({ productId: product._id });
+//     res.json("deleted");
+//   } catch (e) {
+//     console.log("Error", e);
+//   }
+// });
 
 module.exports = app;

@@ -65,16 +65,46 @@ h1 {
 }
 
 .App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.one-edge-shadow {
+  -webkit-box-shadow: 0 3px 20px -4px gray;
+     -moz-box-shadow: 0 3px 20px -4px gray;
+          box-shadow: 0 3px 20px -4px gray;
+}
+
+.dash {
+  height: 80vh;
+}
+
+.opt {
+  margin: auto;
+  margin-top: 30px;
+  min-height: 30vh;
+  width: 70%;
+  padding: 10px;
+}
+
+.dash-btn {
+  padding: 50px 54px;
+  font-size: 3em;
+}
+
+.dash-btn:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+ a, a:hover,a:visited, a:focus {
+    text-decoration:none;
 }

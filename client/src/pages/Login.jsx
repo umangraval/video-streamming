@@ -1,32 +1,29 @@
 import React, { Component } from "react";
-import API from '../API';
-import isEmpty from '../utils/isEmpty';
-import getCurrentUser from '../utils/getCurrentUser';
+import API from "../API";
+import isEmpty from "../utils/isEmpty";
+import getCurrentUser from "../utils/getCurrentUser";
 
 export default class Login extends Component {
   constructor() {
     super();
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      error: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.redirect = this.redirect.bind(this);
   }
   async componentDidMount() {
-    console.log('login', this.props.user);
-    
+    console.log("login", this.props.user);
+
     if (isEmpty(this.props.user)) {
       const currentUser = await getCurrentUser();
       this.props.updateUser(currentUser);
-      if (!isEmpty(currentUser)) this.props.history.push('/upload');
-    } else this.props.history.push('/upload');
+      if (!isEmpty(currentUser)) this.props.history.push("/dashboard");
+    } else this.props.history.push("/dashboard");
   }
 
-  redirect() {
-    this.props.history.push("/signup");
-  }
 
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
@@ -36,40 +33,59 @@ export default class Login extends Component {
     e.preventDefault();
     const loginUser = this.state;
     try {
-      const { data } = await API.post('/auth/login', loginUser);
+      const { data } = await API.post("/auth/login", loginUser);
       this.props.updateUser(data);
-      this.props.history.push("/upload");
+      this.props.history.push("/dashboard");
     } catch (error) {
-      this.props.setError(error);
+      this.setState({...this.state, error: error.response.data.error});
     }
   }
 
   render() {
+    const { error } = this.state;
     return (
-      <div className="Form--Login">
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <input
-              type="text"
-              name="username"
-              id="username"
-              placeholder="Username"
-              value={this.state.username}
-              onChange={this.handleChange}
-            />
+      <div>
+        <div className="d-flex justify-content-center align-items-center dash p-3">
+          <div className="card shadow p-3 mb-5 bg-white rounded">
+            <div className="card-body">
+              <form onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input
+                    type="text"
+                    name="username"
+                    className="form-control"
+                    placeholder="Username"
+                    value={this.state.username}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Password</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    placeholder="Password"
+                    name="password"
+                    value={this.state.password}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <button type="submit" className="btn btn-primary">
+                  Login
+                </button>
+              </form>
+
+              {error ? (
+                <div className="alert alert-danger mt-2" role="alert">
+                  {error}
+                </div>
+              ) : (
+                <div></div>
+              )}
+            </div>
           </div>
-          <div className="form-group">
-            <input
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Password"
-              value={this.state.password}
-              onChange={this.handleChange}
-            />
-          </div>
-          <button title="Login" type="submit"> Submit </button>
-        </form>
+        </div>
       </div>
     );
   }

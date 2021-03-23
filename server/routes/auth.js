@@ -36,10 +36,10 @@ app.post("/login", isLoggedInValidator, async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username }).lean();
-    if (!user) return res.status(404).json("usernameNotFound");
+    if (!user) return res.status(400).json({error: "Username Not Found"});
 
     const matched = await bcrypt.compare(password, user.password);
-    if (!matched) return res.status(400).json("passwordIncorrect");
+    if (!matched) return res.status(400).json({error: "Incorrect Password"});
 
     req.session.userId = user._id;    
     const payload = {

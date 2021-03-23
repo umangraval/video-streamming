@@ -1,39 +1,65 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom';
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import "../../assets/footer.css";
+import "../../assets/medias.css";
 class Player extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            videoId: this.props.match.params.id,
-            videoData: {}
-        };
+  constructor(props) {
+    super(props);
+    this.state = {
+      details: this.props.location.state.details,
+      type: null
+    };
+  }
+  async componentDidMount() {
+    try {
+      this.state.details.filename.split(".")[1] === "mp4"
+        ? this.setState({ type: "video" })
+        : this.setState({ type: "image" });
+    } catch (error) {
+      console.log(error);
     }
-    async componentDidMount() {
-        try {
-            const res = await fetch(`${process.env.REACT_APP_BASE_URL}/media/video/${this.state.videoId}/data`);
-            const data = await res.json();
-            this.setState({ videoData: data });
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    
-    
-    render() {
-    
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <video controls autoPlay controlsList="nodownload" >
-                        <source src={`${process.env.REACT_APP_BASE_URL}/media/video/${this.state.videoId}`} type="video/mp4"></source>
-                    </video>
-                    <h1>{ this.state.videoData.name }</h1>
-                    <button  onClick={() => { this.props.history.goBack() }}>Back</button>
-                </header>
-                
+  }
+
+  render() {
+    const { details, type } = this.state;
+    const base_url = `${process.env.REACT_APP_BASE_URL}`;
+    return (
+      <div>
+        <div className="container-fluid mt-3">
+          <div className="card border-0">
+            {type === "video" ? (
+              <video controls autoPlay controlsList="nodownload">
+                <source
+                  src={`${process.env.REACT_APP_BASE_URL}/media/video/${this.state.details.filename}`}
+                  type="video/mp4"
+                ></source>
+              </video>
+            ) : (
+              <img src={base_url + details.poster} alt="img" />
+            )}
+            <div className="card-body">
+              <h5 className="card-title">{details.name}</h5>
+              <h6 className="card-subtitle mb-2 text-muted">
+                {details.categoryname}
+              </h6>
+              <p className="card-text">{details.description}</p>
             </div>
-        )
-    }
+          </div>
+        </div>
+        <footer className="footer">
+          <button
+            className="btn btn-primary"
+            type="submit"
+            onClick={() => {
+              this.props.history.goBack();
+            }}
+          >
+            Back
+          </button>
+        </footer>
+      </div>
+    );
+  }
 }
 
 export default withRouter(Player);

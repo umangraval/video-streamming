@@ -1,38 +1,39 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import API from "../../API";
-// import Upload from './Upload';
+import "../../assets/footer.css";
+import "../../assets/category.css";
 
 export default class Product extends Component {
   constructor() {
     super();
     this.state = {
-      videos: []
+      medias: [],
+      pname: null,
+      pid: null
     };
   }
   async componentDidMount() {
     try {
+      const { id } = this.props.match.params;
+      const res = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/product/${id}`
+      );
+      const product = await res.json();
       const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/media/videos/${this.props.match.params.id}`
+        `${process.env.REACT_APP_BASE_URL}/media/medias/${id}`
       );
       const data = await response.json();
       console.log(data);
-      this.setState({ videos: [...data] });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async onDelete(e) {
-    try {
-      await API.delete(
-        `${process.env.REACT_APP_BASE_URL}/media/delete/${e._id}`
-      );
+      let group = data.reduce((r, a) => {
+        r[a.categoryname] = [...(r[a.categoryname] || []), a];
+        return r;
+      }, {});
+      console.log(group);
       this.setState({
         ...this.state,
-        videos: this.state.videos.filter(function(video) {
-          return video._id !== e._id;
-        })
+        pid: id,
+        pname: product.name,
+        medias: group
       });
     } catch (error) {
       console.log(error);
@@ -40,45 +41,36 @@ export default class Product extends Component {
   }
 
   render() {
+    const { pname, medias, pid } = this.state;
     return (
-      <div className="App App-header">
-        <div className="container">
-          <div className="row">
-            {this.state.videos.map(video => (
-              <div className="col-md-4" key={video._id}>
-                  <div className="card border-0">
-                    <img
-                      src={`${process.env.REACT_APP_BASE_URL}${video.poster}`}
-                      alt={video.name}
-                    />
-                    <div className="card-body">
-                    <Link to={`/player/${video.filename}`}>
-                      <p>{video.name}</p>
-                      </Link>
-                      <div
-                        onClick={() => {
-                          this.onDelete({
-                            _id: video._id
-                          });
-                        }}
-                        className="btn btn-danger"
-                      >
-                        Delete
-                      </div>
-                      {/* <p>{video.duration}</p> */}
-                    </div>
-                  </div>
-                
-              </div>
+      <div>
+        <nav className="navbar sticky-top navbar-light bg-light one-edge-shadow">
+          <span className="navbar-brand">{pname}</span>
+        </nav>
+        <div className="category-list">
+          <ul className="list-group">
+            {Object.keys(medias).map(e => (
+              <Link
+                to={{
+                  pathname: `/media/${pid}`,
+                  state: {
+                    media: medias[e],
+                    cname: e
+                  }
+                }}
+              >
+                <li
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                  style={{ color: "black" }}
+                >
+                  {e}
+                  <span className="badge badge-primary badge-pill">
+                    {medias[e].length}
+                  </span>
+                </li>
+              </Link>
             ))}
-          </div>
-          <button
-            onClick={() => {
-              this.props.history.goBack();
-            }}
-          >
-            Back
-          </button>
+          </ul>
         </div>
       </div>
     );
