@@ -97,7 +97,12 @@ export default class Manage extends Component {
                   >
                     QRcode
                   </button>
-                  <Link to={`/product/${product._id}`}>
+                  <Link to={{
+                    pathname: `/product/${product._id}`,
+                    state: {
+                      product
+                    }
+                    }}>
                     <button type="button" className="btn btn-outline-info">
                       View
                     </button>
