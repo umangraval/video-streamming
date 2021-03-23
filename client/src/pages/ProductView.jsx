@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 // import Qrcode from "../components/Qrcode";
 import { Modal, Button } from "react-bootstrap";
+import isEmpty from "../utils/isEmpty";
 import API from "../API";
 import "../assets/manage.css";
 
@@ -78,6 +79,11 @@ export default class ProductView extends Component {
   }
 
   render() {
+    const { user } = this.props;
+    if (isEmpty(user)) {
+      return <Redirect to="/login" />;
+    }
+
     const base_url = `${process.env.REACT_APP_BASE_URL}`;
     const { pname, medias, cmedias } = this.state;
     return (

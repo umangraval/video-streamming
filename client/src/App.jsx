@@ -59,11 +59,7 @@ export default class App extends Component {
             <Navbar user={user} updateUser={this.updateUser} />
             <Switch>
               <Route exact path="/">
-                {user ? (
-                  <Redirect to="/dashboard" />
-                ) : (
-                  <Redirect to="/login" />
-                )}
+                {user ? <Redirect to="/dashboard" /> : <Redirect to="/login" />}
               </Route>
               <Route
                 exact
@@ -90,26 +86,24 @@ export default class App extends Component {
                   />
                 )}
               />
-              {/* <Route path="/dashboard" component={Home}></Route> */}
-              <Route path="/manage" component={Manage}></Route>
-              {/* <Route path="/up" component={MediaUpload}></Route> */}
-
               <Route
                 exact
-                path="/upload"
+                path="/manage"
                 render={props => (
-                  <Upload
+                  <Manage {...props} user={user} updateUser={this.updateUser} />
+                )}
+              />
+              <Route
+                exact
+                path="/product/:id"
+                render={props => (
+                  <ProductView
                     {...props}
                     user={user}
                     updateUser={this.updateUser}
-                    setError={this.setError}
                   />
                 )}
               />
-              <Route path="/newproduct" component={NewProduct}></Route>
-              <Route path="/newcategory" component={NewCategory}></Route>
-              <Route path="/player/:id" component={Player}></Route>
-              <Route path="/product/:id" component={ProductView}></Route>
             </Switch>
           </BrowserView>
           <MobileView>

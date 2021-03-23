@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 // import Qrcode from "../components/Qrcode";
 import QRCode from "qrcode.react";
 import { Modal, Button } from "react-bootstrap";
+import isEmpty from "../utils/isEmpty";
 import "../assets/manage.css";
 export default class Manage extends Component {
   constructor() {
@@ -44,6 +45,10 @@ export default class Manage extends Component {
     this.setState({ ...this.state, name, url, show: true });
 
   render() {
+    const { user } = this.props;
+    if (isEmpty(user)) {
+      return <Redirect to="/login" />;
+    }
     const base_url = `${process.env.REACT_APP_CLIENT_URL}`;
     const { products, name, url } = this.state;
     return (
