@@ -46,34 +46,53 @@ export default class Product extends Component {
     return (
       <div>
         <nav className="navbar sticky-top navbar-light bg-light one-edge-shadow">
-          <span className="navbar-brand"><img src={Logo} alt="img" width="80" height="60"/></span>
+          <span className="navbar-brand">
+            <img src={Logo} alt="img" width="80" height="60" />
+          </span>
         </nav>
-        <div className="mt-4 ml-3"><h4>{pname}</h4></div>
-        <div className="category-list">
-          <ul className="list-group">
-            {Object.keys(medias).map(e => (
-              <Link
-                to={{
-                  pathname: `/media/${pid}`,
-                  state: {
-                    media: medias[e],
-                    cname: e
-                  }
-                }}
-              >
-                <li
-                  className="list-group-item d-flex justify-content-between align-items-center"
-                  style={{ color: "black" }}
-                >
-                  {e}
-                  <span className="badge badge-primary badge-pill">
-                    {medias[e].length}
-                  </span>
-                </li>
-              </Link>
-            ))}
-          </ul>
-        </div>
+        {pname ? (
+          <>
+            <div className="mt-4 ml-3">
+              <h4>{pname}</h4>
+            </div>
+            {Object.keys(medias).length > 0 ? (
+              <div className="category-list">
+                <ul className="list-group">
+                  {Object.keys(medias).map(e => (
+                    <Link
+                      to={{
+                        pathname: `/media/${pid}`,
+                        state: {
+                          media: medias[e],
+                          cname: e
+                        }
+                      }}
+                    >
+                      <li
+                        className="list-group-item d-flex justify-content-between align-items-center"
+                        style={{ color: "black" }}
+                      >
+                        {e}
+                        <span className="badge badge-primary badge-pill">
+                          {medias[e].length}
+                        </span>
+                      </li>
+                    </Link>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <div className="m-4 text-center text-secondary">
+                <h3>No Media</h3>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="m-4 text-center text-secondary">
+            <h3>No Product</h3>
+          </div>
+        )}
+
         <footer className="footer">
           <div className="text-dark mt-2">Contact Us: 7088036665</div>
         </footer>
