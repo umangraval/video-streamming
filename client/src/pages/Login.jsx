@@ -32,6 +32,30 @@ export default class Login extends Component {
   async handleSubmit(e) {
     e.preventDefault();
     const loginUser = this.state;
+    if (!loginUser.username) {
+      this.setState({ ...this.state, error: "Username Required" });
+
+      setTimeout(() => {
+        this.setState({
+          ...this.state,
+          error: null
+        });
+      }, 2000);
+
+      return;
+    }
+    if (!loginUser.password) {
+      this.setState({ ...this.state, error: "Password Required" });
+
+      setTimeout(() => {
+        this.setState({
+          ...this.state,
+          error: null
+        });
+      }, 2000);
+
+      return;
+    }
     try {
       const { data } = await API.post("/auth/login", loginUser);
       this.props.updateUser(data);
