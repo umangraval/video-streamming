@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import isEmpty from "../utils/isEmpty";
 import API from '../API'; 
-
+import Logo from "../assets/img/logo.png";
 export default class Navbar extends Component {
   async logout() {
     await API.post(`/auth/logout`).then((res) => {
@@ -18,14 +18,14 @@ export default class Navbar extends Component {
         <nav className="navbar navbar-inverse navbar-light bg-light one-edge-shadow">
           <div className="container-fluid w-75">
             <div className="navbar-header navbar-brand">
-                RSDecor
+                <img src={Logo} alt="img" width="110" height="80" />
             </div>
             <ul className="nav navbar-nav navbar-right">
               <li>
                 {isEmpty(this.props.user) ? (<a className="nav-link" href="/login">
-                  Login
+                  <h4>Login</h4>
                 </a>) : (<a className="nav-link" href="/login" onClick={() => {this.logout()}}>
-                  Logout
+                  <h4>Logout</h4>
                 </a>)}
                 
               </li>

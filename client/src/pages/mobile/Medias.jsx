@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import Logo from "../../assets/img/logo.png";
 import "../../assets/footer.css";
 import "../../assets/medias.css";
 import "../../assets/category.css";
@@ -29,9 +30,9 @@ export default class Medias extends Component {
     return (
       <div>
         <nav className="navbar sticky-top navbar-light bg-light one-edge-shadow">
-          <span className="navbar-brand">{cname}</span>
+          <span className="navbar-brand"><img src={Logo} alt="img" width="80" height="60"/></span>
         </nav>
-
+        <div className="mt-4 ml-3"><h4>{cname}</h4></div>
         <div className="category-list">
           {medias.map(e => (
             <Link
@@ -74,6 +75,7 @@ export default class Medias extends Component {
           >
             Back
           </button>
+          <div className="text-dark mt-2">Contact Us: 7088036665</div>
         </footer>
       </div>
     );
