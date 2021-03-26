@@ -54,7 +54,7 @@ app.post("/upload", notLoggedInValidator, upload.single("file"), async function(
       const data = await newVideo.save();
       return res.json(data);
     } else {
-      return res.json("Format not supported. Only mp4, jpg");
+      return res.status(400).json({ error: "Format not supported. Only mp4, jpg, png, jpeg" });
     }
   } catch (e) {
     console.log("Error", e);

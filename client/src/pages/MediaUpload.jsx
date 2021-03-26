@@ -139,7 +139,7 @@ export default class MediaUpload extends Component {
 
   async onSubmit(e) {
     try {
-      e.preventDefault();
+      // e.preventDefault();
 
       if (!this.state.name) {
         this.setState({ ...this.state, uerr: "Media Name Needed" });
@@ -201,11 +201,11 @@ export default class MediaUpload extends Component {
           }
         }
       );
-      console.log(data);
+      console.log("here " + data);
       this.setState({
         ...this.state,
         name: "",
-        file: {},
+        file: null,
         productId: null,
         categoryname: null,
         description: "",
@@ -219,8 +219,8 @@ export default class MediaUpload extends Component {
         });
       }, 2000);
     } catch (error) {
-      this.setState({ success: false });
-      console.log(error);
+      this.setState({ ...this.state, uerr: error.response.data.error });
+      console.log(error.response.data.error);
     }
   }
 
@@ -232,22 +232,7 @@ export default class MediaUpload extends Component {
 
   async fileUpdateHandler(event) {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = e => {
-      if (file.type.match(/video/i)) {
-        if (this.state.videoPreview !== e.target.result) {
-          this.setState({ videoPreview: e.target.result });
-          // preview.style.background = '#eee';
-        }
-      } else {
-        // preview.style.background = `#eee url('${e.target.result}')`;
-        // preview.style.backgroundSize = 'contain';
-        // preview.style.backgroundRepeat = 'no-repeat';
-        // preview.style.backgroundPosition = 'center';
-      }
-      this.setState({ file });
-    };
-    reader.readAsDataURL(file);
+    this.setState({ ...this.state, file });
   }
 
   render() {
