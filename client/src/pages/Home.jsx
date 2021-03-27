@@ -21,6 +21,20 @@ export default function Home(props) {
           </Link>
         </div>
         <div className="col">
+          <Link to="/pnc">
+            <button
+              type="button"
+              className="btn btn-outline-primary btn-lg btn-block dash-btn"
+            >
+              PnC
+            </button>
+          </Link>
+        </div>
+      </div>
+      <div className="row opt">
+        {/* <div className="col">
+        </div> */}
+        <div className="col">
           <Link to="/manage">
             <button
               type="button"
@@ -30,6 +44,8 @@ export default function Home(props) {
             </button>
           </Link>
         </div>
+        {/* <div className="col">
+        </div> */}
       </div>
     </div>
   );

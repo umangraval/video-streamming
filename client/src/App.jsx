@@ -16,6 +16,7 @@ import Medias from "./pages/mobile/Medias";
 import Navbar from "./components/Navbar";
 import MediaUpload from "./pages/MediaUpload";
 import Manage from "./pages/Manage";
+import PnC from "./pages/PnC";
 import "./App.css";
 
 export default class App extends Component {
@@ -72,6 +73,17 @@ export default class App extends Component {
                 path="/up"
                 render={props => (
                   <MediaUpload
+                    {...props}
+                    user={user}
+                    updateUser={this.updateUser}
+                  />
+                )}
+              />
+              <Route
+                exact
+                path="/pnc"
+                render={props => (
+                  <PnC
                     {...props}
                     user={user}
                     updateUser={this.updateUser}

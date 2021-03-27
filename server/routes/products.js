@@ -37,28 +37,29 @@ app.get("/:id", async function(req, res) {
     console.log("Error", e);
   }
 });
-// app.delete("/delete/:id", notLoggedInValidator, async function(req, res) {
-//   try {
-//     const { id } = req.params;
-//     const product = await Product.findById(id);
-//     console.log(product);
-//     const media = await Video.find({ productId: product._id });
-//     media.forEach(e => {
-//       const path = process.env.STORAGE + `/${e.filename}.mp4`;
-//       fs.unlink(path, err => {
-//         if (err) {
-//           console.error(err);
-//           return;
-//         }
-//         //file removed
-//       });
-//     });
-//     await Product.findByIdAndDelete(id);
-//     await Video.deleteMany({ productId: product._id });
-//     res.json("deleted");
-//   } catch (e) {
-//     console.log("Error", e);
-//   }
-// });
+
+app.delete("/delete/:id", notLoggedInValidator, async function(req, res) {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+    console.log(product);
+    const media = await Media.find({ productId: product._id });
+    media.forEach(e => {
+      const path = process.env.STORAGE + `/${e.filename}`;
+      fs.unlink(path, err => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        //file removed
+      });
+    });
+    await Product.findByIdAndDelete(id);
+    await Media.deleteMany({ productId: product._id });
+    res.json("deleted");
+  } catch (e) {
+    console.log("Error", e);
+  }
+});
 
 module.exports = app;
