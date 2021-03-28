@@ -53,7 +53,7 @@ export default class MediaUpload extends Component {
 
   async onSubmit(e) {
     try {
-      // e.preventDefault();
+      e.preventDefault();
 
       if (!this.state.name) {
         this.setState({ ...this.state, uerr: "Media Name Needed" });
@@ -133,8 +133,15 @@ export default class MediaUpload extends Component {
         });
       }, 2000);
     } catch (error) {
-      if (error.response.data.error)
+      if (error.response.data.error) {
         this.setState({ ...this.state, uerr: error.response.data.error });
+        setTimeout(() => {
+          this.setState({
+            ...this.state,
+            uerr: null
+          });
+        }, 2000);
+      }
       console.log(error.response.data.error);
     }
   }
