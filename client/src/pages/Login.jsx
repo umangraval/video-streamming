@@ -61,7 +61,7 @@ export default class Login extends Component {
       this.props.updateUser(data);
       this.props.history.push("/dashboard");
     } catch (error) {
-      if(error.response.data.error) {
+      if(typeof error.response === undefined) {
         this.setState({...this.state, error: error.response.data.error});
         setTimeout(() => {
           this.setState({

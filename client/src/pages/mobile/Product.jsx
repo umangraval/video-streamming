@@ -94,6 +94,15 @@ export default class Product extends Component {
         )}
 
         <footer className="footer">
+        <button
+            className="btn btn-primary"
+            type="submit"
+            onClick={() => {
+              window.location = 'https://www.the-qrcode-generator.com/scan';
+            }}
+          >
+            Scanner
+          </button>
           <div className="text-dark mt-2">Contact Us: 7088036665</div>
         </footer>
       </div>

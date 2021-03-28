@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
-import QRCode from "qrcode.react";
+// import QRCode from "qrcode.react";
+import { QRCode } from 'react-qrcode-logo';
 import { Modal } from "react-bootstrap";
+import logo from "../assets/img/logo.png";
 import isEmpty from "../utils/isEmpty";
 import "../assets/manage.css";
 export default class Manage extends Component {
@@ -114,7 +116,8 @@ export default class Manage extends Component {
             </Modal.Header>
             <Modal.Body>
               <center>
-                <QRCode size={250} value={base_url + url} className="QRCode" />
+                {/* <QRCode size={250} value={base_url + url} className="QRCode" /> */}
+                <QRCode value={base_url + url} logoImage={logo} logoWidth="70" qrStyle="dots" fgColor="blue" className="QRCode" />
               </center>
             </Modal.Body>
             <Modal.Footer>
