@@ -16,6 +16,7 @@ import Medias from "./pages/mobile/Medias";
 import Navbar from "./components/Navbar";
 import MediaUpload from "./pages/MediaUpload";
 import Manage from "./pages/Manage";
+import Analytics from "./pages/Analytics";
 import PnC from "./pages/PnC";
 import "./App.css";
 
@@ -95,6 +96,13 @@ export default class App extends Component {
                 path="/manage"
                 render={props => (
                   <Manage {...props} user={user} updateUser={this.updateUser} />
+                )}
+              />
+              <Route
+                exact
+                path="/analytics"
+                render={props => (
+                  <Analytics {...props} user={user} updateUser={this.updateUser} />
                 )}
               />
               <Route

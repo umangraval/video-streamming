@@ -44,6 +44,16 @@ export default function Home(props) {
             </button>
           </Link>
         </div>
+        <div className="col">
+          <Link to="/analytics">
+            <button
+              type="button"
+              className="btn btn-outline-warning btn-lg btn-block dash-btn"
+            >
+              Analytics
+            </button>
+          </Link>
+        </div>
         {/* <div className="col">
         </div> */}
       </div>
