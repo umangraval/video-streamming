@@ -4,24 +4,43 @@ import Chart from "react-apexcharts";
 import isEmpty from "../utils/isEmpty";
 
 export default class Analytics extends Component {
+  constructor() {
+    super();
+    this.state = {
+      products: [],
+    };
+  }
+
+  async componentDidMount() {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/product/products`
+      );
+      const data = await response.json();
+      console.log(data);
+      this.setState({ products: [...data] });
+    } catch (error) {
+      console.log(error);
+    }
+  }
   render() {
     const { user } = this.props;
     if (isEmpty(user)) {
       return <Redirect to="/login" />;
     }
-    const state = {
+    const qrcodedata = {
         options: {
           chart: {
             id: "basic-bar"
           },
           xaxis: {
-            categories: ['kajaria', 'asian', 'jaguar']
+            categories: this.state.products.map(a => a.name) 
           }
         },
         series: [
           {
             name: "Scans",
-            data: [30, 40, 45]
+            data: this.state.products.map(a => a.hits)
           }
         ]
       };
@@ -55,8 +74,8 @@ export default class Analytics extends Component {
         <div className="row">
             <div className="col d-flex justify-content-center">
             <Chart
-              options={state.options}
-              series={state.series}
+              options={qrcodedata.options}
+              series={qrcodedata.series}
               type="bar"
               width="700"
             />

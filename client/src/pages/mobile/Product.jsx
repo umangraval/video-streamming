@@ -49,7 +49,7 @@ export default class Product extends Component {
       }, 3000);
       const { id } = this.props.match.params;
       const res = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/product/${id}`
+        `${process.env.REACT_APP_BASE_URL}/product/qrcode/${id}`
       );
       const product = await res.json();
       const response = await fetch(

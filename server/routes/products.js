@@ -28,10 +28,13 @@ app.get("/products", async function(req, res) {
   }
 });
 
-// endpoint to fetch all products metadata
-app.get("/:id", async function(req, res) {
+app.get("/qrcode/:id", async function(req, res) {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findByIdAndUpdate(req.params.id, {
+      $inc: {
+        hits: 1
+      }
+    });
     res.json(product);
   } catch (e) {
     console.log("Error", e);
