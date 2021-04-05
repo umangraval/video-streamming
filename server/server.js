@@ -11,7 +11,7 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 var corsOptions = {
-  origin: ['http://localhost:3000', 'http://192.168.0.103:3000'],
+  origin: ['http://localhost:3000', 'http://192.168.0.103:3000', 'http://192.168.1.244:3000', 'http://local.rsdecor.in'],
   credentials: true };
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -21,7 +21,7 @@ app.use(cors(corsOptions));
 // ==========================================================
 
 // Database Connection
-mongoose.connect("mongodb://localhost/mydb", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
 
 mongoose.connection.once("open", () => {
   console.log("MongoDB Connected");
