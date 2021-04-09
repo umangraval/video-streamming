@@ -15,10 +15,11 @@ export default class PnC extends Component {
       perr: null,
       cname: "",
       pname: "",
+      slug: "",
       success: false,
       show: false,
       deleteitem: null,
-      deletetype: null,
+      deletetype: null
     };
     this.onChange = this.onChange.bind(this);
     this.onProductSubmit = this.onProductSubmit.bind(this);
@@ -83,7 +84,7 @@ export default class PnC extends Component {
         });
       }, 2000);
     } catch (error) {
-      if(error.response.data.error)
+      if (error.response.data.error)
         this.setState({ ...this.state, uerr: error.response.data.error });
       console.log(error);
     }
@@ -98,7 +99,19 @@ export default class PnC extends Component {
         setTimeout(() => {
           this.setState({
             ...this.state,
-            cerr: null
+            perr: null
+          });
+        }, 2000);
+
+        return;
+      }
+      if (!this.state.slug) {
+        this.setState({ ...this.state, perr: "Slug Needed" });
+
+        setTimeout(() => {
+          this.setState({
+            ...this.state,
+            perr: null
           });
         }, 2000);
 
@@ -107,12 +120,14 @@ export default class PnC extends Component {
       const data = await API.post(
         `${process.env.REACT_APP_BASE_URL}/product/`,
         {
-          name: this.state.pname
+          name: this.state.pname,
+          slug: this.state.slug
         }
       );
       this.setState({
         ...this.state,
         pname: "",
+        slug: "",
         success: true,
         products: [...this.state.products, data.data]
       });
@@ -124,15 +139,26 @@ export default class PnC extends Component {
         });
       }, 2000);
     } catch (error) {
-      if(error.response.data.error)
-        this.setState({ ...this.state, uerr: error.response.data.error });
+      this.setState({ ...this.state, perr: error.response.data.error });
+
+      setTimeout(() => {
+        this.setState({
+          ...this.state,
+          perr: null
+        });
+      }, 2000);
       console.log(error);
     }
   }
 
   handleClose = () => this.setState({ ...this.state, show: false });
   handleShow = e => {
-    this.setState({ ...this.state, show: true, deleteitem: e.details, deletetype: e.type });
+    this.setState({
+      ...this.state,
+      show: true,
+      deleteitem: e.details,
+      deletetype: e.type
+    });
   };
 
   async onPDelete() {
@@ -148,7 +174,7 @@ export default class PnC extends Component {
         ...this.state,
         products: rem,
         deleteitem: null,
-        deletetype: null,
+        deletetype: null
       });
       this.handleClose();
     } catch (error) {
@@ -170,7 +196,7 @@ export default class PnC extends Component {
         ...this.state,
         categories: rem,
         deleteitem: null,
-        deletetype: null,
+        deletetype: null
       });
       this.handleClose();
     } catch (error) {
@@ -193,6 +219,7 @@ export default class PnC extends Component {
       perr,
       products,
       categories,
+      slug
     } = this.state;
 
     return (
@@ -243,6 +270,15 @@ export default class PnC extends Component {
                         name="pname"
                         onChange={this.onChange}
                       />
+                      <input
+                        type="text"
+                        className="form-control mt-3"
+                        placeholder="Enter slug"
+                        value={slug}
+                        name="slug"
+                        onChange={this.onChange}
+                      />
+                      <div className="text-muted mt-1">{`${process.env.REACT_APP_CLIENT_URL}/mobile/${slug}`}</div>
                     </div>
                     <button type="submit" className="btn btn-primary">
                       Submit
@@ -289,32 +325,54 @@ export default class PnC extends Component {
             </div>
           </div>
           <div className="row">
-              <div className="col pnclist">
-                <ul class="list-group">
+            <div className="col pnclist">
+              <ul class="list-group">
                 {products.map(product => (
                   <li class="list-group-item d-flex justify-content-between align-items-center">
-                  {product.name}
-                  <button type="button" className="btn btn-outline-danger" onClick={() => {this.handleShow({ details: product, type: "product" })}}>Delete</button>
-                </li>
+                    {product.name}
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger"
+                      onClick={() => {
+                        this.handleShow({ details: product, type: "product" });
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </li>
                 ))}
-                </ul>
-              </div>
-              <div className="col pnclist">
-                <ul class="list-group">
-                {categories.map(category => (
-                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                 {category.name}
-                 <button type="button" className="btn btn-outline-danger" onClick={() => {this.handleShow({ details: category, type: "category" })}}>Delete</button>
-               </li>
-                ))}
-                </ul>
-              </div>
+              </ul>
             </div>
+            <div className="col pnclist">
+              <ul class="list-group">
+                {categories.map(category => (
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {category.name}
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger"
+                      onClick={() => {
+                        this.handleShow({
+                          details: category,
+                          type: "category"
+                        });
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Body>
-            Are you sure you want to delete{" "}
-            "{this.state.deleteitem ? this.state.deleteitem.name + '" ' + this.state.deletetype : ""}?
+            Are you sure you want to delete "
+            {this.state.deleteitem
+              ? this.state.deleteitem.name + '" ' + this.state.deletetype
+              : ""}
+            ?
           </Modal.Body>
           <Modal.Footer>
             <button
@@ -328,10 +386,8 @@ export default class PnC extends Component {
               type="button"
               className="btn btn-danger"
               onClick={() => {
-                if(this.state.deletetype === "product")
-                  this.onPDelete();
-                else 
-                this.onCDelete();
+                if (this.state.deletetype === "product") this.onPDelete();
+                else this.onCDelete();
               }}
             >
               Delete

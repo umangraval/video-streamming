@@ -89,7 +89,7 @@ export default class Manage extends Component {
                     type="button"
                     className="btn btn-outline-secondary"
                     onClick={() => {
-                      this.handleShow(product.name, `/product/${product._id}`);
+                      this.handleShow(product.name, `/mobile/${product.slug}`);
                     }}
                   >
                     QRcode
@@ -116,6 +116,7 @@ export default class Manage extends Component {
             </Modal.Header>
             <Modal.Body>
               <center>
+                Visit <span className="text-info font-weight-bold">{`${process.env.REACT_APP_CLIENT_URL}${url}`}</span> on mobile
                 {/* <QRCode size={250} value={base_url + url} className="QRCode" /> */}
                 <QRCode value={base_url + url} logoImage={logo} logoWidth="70" qrStyle="dots" fgColor="blue" className="QRCode" />
               </center>

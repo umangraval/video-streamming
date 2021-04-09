@@ -8,9 +8,12 @@ const app = express();
 
 app.post("/", notLoggedInValidator, async function(req, res) {
   try {
-    const { name } = req.body;
+    const { name, slug } = req.body;
+    const product = await Product.findOne({slug});
+    if (product) return res.status(400).json({ error: "Slug already exist" });
     const newProduct = new Product();
     newProduct.name = name;
+    newProduct.slug = slug;
     const data = await newProduct.save();
     res.json(data);
   } catch (e) {
