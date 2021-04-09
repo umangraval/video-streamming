@@ -125,7 +125,7 @@ export default class App extends Component {
               <Route exact path="/scanner" component={Scanner}></Route>
               <Route exact path="/player/:id" component={Player}></Route>
               <Route exact path="/media/:id" component={Medias}></Route>
-              <Route exact path="/product/:id" component={Product}></Route>
+              <Route exact path="/qrcode/:id" component={Product}></Route>
             </Switch>
           </MobileView>
         </Router>

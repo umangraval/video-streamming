@@ -89,7 +89,7 @@ export default class Manage extends Component {
                     type="button"
                     className="btn btn-outline-secondary"
                     onClick={() => {
-                      this.handleShow(product.name, `/mobile/${product.slug}`);
+                      this.handleShow(product.name, `/qrcode/${product.slug}`);
                     }}
                   >
                     QRcode

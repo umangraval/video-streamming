@@ -52,8 +52,9 @@ export default class Product extends Component {
         `${process.env.REACT_APP_BASE_URL}/product/qrcode/${id}`
       );
       const product = await res.json();
+      // console.log(product);
       const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/media/medias/${id}`
+        `${process.env.REACT_APP_BASE_URL}/media/medias/${product._id}`
       );
       const data = await response.json();
       console.log(data);
@@ -61,10 +62,10 @@ export default class Product extends Component {
         r[a.categoryname] = [...(r[a.categoryname] || []), a];
         return r;
       }, {});
-      console.log(group);
+      // console.log(group);
       this.setState({
         ...this.state,
-        pid: id,
+        pid: product._id,
         pname: product.name,
         medias: group
       });

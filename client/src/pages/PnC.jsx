@@ -278,7 +278,7 @@ export default class PnC extends Component {
                         name="slug"
                         onChange={this.onChange}
                       />
-                      <div className="text-muted mt-1">{`${process.env.REACT_APP_CLIENT_URL}/mobile/${slug}`}</div>
+                      <div className="text-muted mt-1">{`${process.env.REACT_APP_CLIENT_URL}/qrcode/${slug}`}</div>
                     </div>
                     <button type="submit" className="btn btn-primary">
                       Submit
