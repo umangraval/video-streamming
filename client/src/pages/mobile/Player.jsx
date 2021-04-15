@@ -32,14 +32,14 @@ class Player extends Component {
         <div className="container-fluid mt-3">
           <div className="card border-0">
             {type === "video" ? (
-              <video controls autoPlay controlsList="nodownload">
+              <video controls autoPlay controlsList="nodownload" height="200">
                 <source
                   src={`${process.env.REACT_APP_BASE_URL}/media/video/${this.state.details.filename}`}
                   type="video/mp4"
                 ></source>
               </video>
             ) : (
-              <img src={base_url + details.poster} alt="img" />
+              <img src={base_url + details.poster} alt="img" height="200" />
             )}
             <div className="card-body">
               <h5 className="card-title">{details.name}</h5>

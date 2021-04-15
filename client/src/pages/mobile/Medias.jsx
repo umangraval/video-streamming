@@ -56,7 +56,7 @@ export default class Medias extends Component {
                     <img
                       src={base_url + e.poster}
                       width="100%"
-                      height="100%"
+                      height="100"
                       alt="img"
                     />
                   </div>
